@@ -89,6 +89,22 @@ export const PropertyProvider = ({ children }) => {
     );
   }, []);
 
+  // Get all inquiries from all properties
+  const allInquiries = properties.flatMap(p => 
+    (p.inquiries || []).map(i => ({ ...i, propertyId: p.id }))
+  );
+
+  // Get all appointments from all properties
+  const allAppointments = properties.flatMap(p => 
+    (p.inquiries || []).filter(i => i.type === 'appointment').map(a => ({ ...a, propertyId: p.id }))
+  );
+
+  const setPropertyApproval = useCallback((id, approved) => {
+    setProperties((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, isApproved: approved } : p))
+    );
+  }, []);
+
   return (
     <PropertyContext.Provider
       value={{
@@ -102,7 +118,10 @@ export const PropertyProvider = ({ children }) => {
         addProperty,
         approveProperty,
         rejectProperty,
+        setPropertyApproval,
         addInquiry,
+        inquiries: allInquiries,
+        appointments: allAppointments,
         wishlist,
         addToWishlist,
         removeFromWishlist,

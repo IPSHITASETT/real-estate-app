@@ -29,6 +29,10 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
     toggleWishlist(propertyId);
   };
 
+  const handleCardClick = (propertyId) => {
+    navigate(`/property/${propertyId}`);
+  };
+
   if (!filteredProperties || filteredProperties.length === 0) {
     return (
       <div className="property-list">
@@ -67,7 +71,11 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
             }}
           >
             {displayProperties.map(property => (
-              <div key={property.id} className="property-card">
+              <div 
+                key={property.id} 
+                className="property-card"
+                onClick={() => handleCardClick(property.id)}
+              >
                 <div className="property-image">
                   <img src={property.image} alt={property.title} />
                   <button 
