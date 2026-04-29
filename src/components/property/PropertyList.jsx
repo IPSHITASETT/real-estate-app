@@ -9,16 +9,15 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const displayProperties = limit ? filteredProperties.slice(0, limit) : filteredProperties;
-
   const cardsPerView = 4;
   const maxIndex = Math.max(0, displayProperties.length - cardsPerView);
 
   const handlePrev = () => {
-    setCurrentIndex(prev => Math.max(0, prev - 1));
+    setCurrentIndex(prev => Math.max(0, prev - cardsPerView));
   };
 
   const handleNext = () => {
-    setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
+    setCurrentIndex(prev => Math.min(maxIndex, prev + cardsPerView));
   };
 
   const handleViewAll = () => {
@@ -44,43 +43,53 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
         </div>
       )}
 
-      <div className="carousel-container">
+      <div className="carousel-wrapper">
         {displayProperties.length > cardsPerView && (
-          <>
-            <button className="carousel-btn prev" onClick={handlePrev} disabled={currentIndex === 0}>
-              ‹
-            </button>
-            <button className="carousel-btn next" onClick={handleNext} disabled={currentIndex >= maxIndex}>
-              ›
-            </button>
-          </>
+          <button 
+            className="carousel-btn prev" 
+            onClick={handlePrev} 
+            disabled={currentIndex === 0}
+          >
+            ‹
+          </button>
         )}
         
-        <div 
-          className="property-list" 
-          style={{ 
-            transform: `translateX(-${currentIndex * (100 / cardsPerView)}%)`,
-            transition: 'transform 0.5s ease'
-          }}
-        >
-          {displayProperties.map(property => (
-            <div key={property.id} className="property-card">
-              <div className="property-image">
-                <img src={property.image} alt={property.title} />
-              </div>
-              <div className="property-details">
-                <h3>{property.title}</h3>
-                <p className="property-location">{property.location}</p>
-                <p className="property-price">{property.priceLabel}</p>
-                <div className="property-features">
-                  <span>🛏 {property.bedrooms} Beds</span>
-                  <span>🚿 {property.bathrooms} Baths</span>
-                  <span>📐 {property.sqft} sqft</span>
+        <div className="carousel-viewport">
+          <div 
+            className="carousel-track"
+            style={{ 
+              transform: `translateX(-${currentIndex * (100 / cardsPerView)}%)`
+            }}
+          >
+            {displayProperties.map(property => (
+              <div key={property.id} className="property-card">
+                <div className="property-image">
+                  <img src={property.image} alt={property.title} />
+                </div>
+                <div className="property-details">
+                  <h3>{property.title}</h3>
+                  <p className="property-location">{property.location}</p>
+                  <p className="property-price">{property.priceLabel}</p>
+                  <div className="property-features">
+                    <span>🛏 {property.bedrooms} Beds</span>
+                    <span>🚿 {property.bathrooms} Baths</span>
+                    <span>📐 {property.sqft} sqft</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+
+        {displayProperties.length > cardsPerView && (
+          <button 
+            className="carousel-btn next" 
+            onClick={handleNext} 
+            disabled={currentIndex >= maxIndex}
+          >
+            ›
+          </button>
+        )}
       </div>
     </div>
   );
