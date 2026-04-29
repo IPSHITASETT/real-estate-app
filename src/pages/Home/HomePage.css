@@ -19,3 +19,34 @@
   color: #666;
   font-size: 16px;
 }
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.toggle-btn {
+  padding: 10px 20px;
+  border: 2px solid #ddd;
+  background: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #666;
+}
+
+.toggle-btn:hover {
+  border-color: #1976d2;
+  color: #1976d2;
+}
+
+.toggle-btn.active {
+  background: #1976d2;
+  border-color: #1976d2;
+  color: white;
+}

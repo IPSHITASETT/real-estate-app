@@ -13,6 +13,7 @@ const PropertiesPage = () => {
     possession: searchParams.get('possession')?.split(',').filter(Boolean) || [],
     minPrice: searchParams.get('minPrice') || '',
     maxPrice: searchParams.get('maxPrice') || '',
+    isPremium: searchParams.get('isPremium') === 'true',
   });
 
   // Apply filters from URL on mount
@@ -22,6 +23,7 @@ const PropertiesPage = () => {
     const possession = searchParams.get('possession')?.split(',').filter(Boolean) || [];
     const minPrice = searchParams.get('minPrice') || '';
     const maxPrice = searchParams.get('maxPrice') || '';
+    const isPremium = searchParams.get('isPremium') === 'true';
 
     setFilters({
       city,
@@ -29,6 +31,7 @@ const PropertiesPage = () => {
       possession,
       minPrice,
       maxPrice,
+      isPremium,
     });
   }, []);
 
@@ -56,12 +59,13 @@ const PropertiesPage = () => {
     if (localFilters.possession.length) params.set('possession', localFilters.possession.join(','));
     if (localFilters.minPrice) params.set('minPrice', localFilters.minPrice);
     if (localFilters.maxPrice) params.set('maxPrice', localFilters.maxPrice);
+    if (localFilters.isPremium) params.set('isPremium', 'true');
     
     setSearchParams(params);
   };
 
   const clearFilters = () => {
-    const empty = { city: '', configuration: [], possession: [], minPrice: '', maxPrice: '' };
+    const empty = { city: '', configuration: [], possession: [], minPrice: '', maxPrice: '', isPremium: false };
     setLocalFilters(empty);
     setFilters(empty);
     setSearchParams({});
@@ -84,7 +88,9 @@ const PropertiesPage = () => {
     const matchMinPrice = !localFilters.minPrice || p.price >= Number(localFilters.minPrice);
     const matchMaxPrice = !localFilters.maxPrice || p.price <= Number(localFilters.maxPrice);
     
-    return matchCity && matchConfig && matchPossession && matchMinPrice && matchMaxPrice;
+    const matchPremium = !localFilters.isPremium || p.isPremium;
+    
+    return matchCity && matchConfig && matchPossession && matchMinPrice && matchMaxPrice && matchPremium;
   });
 
   return (
@@ -155,6 +161,17 @@ const PropertiesPage = () => {
               onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
             />
           </div>
+        </div>
+
+        <div className="filter-section">
+          <label className="checkbox-item premium-filter">
+            <input
+              type="checkbox"
+              checked={localFilters.isPremium}
+              onChange={(e) => handleFilterChange('isPremium', e.target.checked)}
+            />
+            Premium Properties Only
+          </label>
         </div>
 
         <button className="apply-btn" onClick={applyFilters}>

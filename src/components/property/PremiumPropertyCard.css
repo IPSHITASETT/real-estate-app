@@ -1,0 +1,126 @@
+.premium-card-container {
+  padding: 40px 5%;
+  background: #f9f9f9;
+}
+
+.premium-card {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.premium-card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.premium-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.premium-card:hover .premium-card-image img {
+  transform: scale(1.05);
+}
+
+.premium-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.premium-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+  color: white;
+  z-index: 2;
+}
+
+.premium-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: inline-block;
+  background: #f59e0b;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 3;
+}
+
+.premium-card-content h2 {
+  font-size: 36px;
+  margin: 0 0 16px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.premium-description {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+  max-width: 600px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.explore-btn {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.explore-btn:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+@media (max-width: 768px) {
+  .premium-card {
+    height: 350px;
+  }
+
+  .premium-card-content {
+    padding: 24px;
+  }
+
+  .premium-card-content h2 {
+    font-size: 24px;
+  }
+
+  .premium-description {
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
