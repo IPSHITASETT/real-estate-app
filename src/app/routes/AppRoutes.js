@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import HomePage from "../../pages/Home/HomePage";
+import PropertiesPage from "../../pages/Properties/PropertiesPage";
 
 // Pages (currently simple placeholder)
 const SellerDashboard = () => <h1>Seller Dashboard</h1>;
@@ -17,6 +18,15 @@ const AppRoutes = () => {
           element={
             <Layout>
               <HomePage />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/properties"
+          element={
+            <Layout>
+              <PropertiesPage />
             </Layout>
           }
         />

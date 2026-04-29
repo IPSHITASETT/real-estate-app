@@ -1,0 +1,280 @@
+.properties-page {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Left Sidebar */
+.filters-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filters-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.clear-btn:hover {
+  text-decoration: underline;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.filter-section label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.filter-section input[type="text"],
+.filter-section input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.filter-section input:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
+.checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.checkbox-item input {
+  width: 16px;
+  height: 16px;
+}
+
+.price-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-range input {
+  flex: 1;
+}
+
+.price-range span {
+  color: #666;
+}
+
+.apply-btn {
+  width: 100%;
+  padding: 12px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.apply-btn:hover {
+  background: #1565c0;
+}
+
+/* Right Content */
+.properties-content {
+  flex: 1;
+}
+
+.properties-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.properties-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.results-count {
+  color: #666;
+  font-size: 14px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff;
+  border-radius: 12px;
+}
+
+.no-results p {
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.no-results button {
+  padding: 10px 24px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Horizontal Card Grid */
+.properties-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.property-card-horizontal {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.property-card-horizontal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  width: 280px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.premium-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #f59e0b;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.card-details {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-details h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.card-location {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+}
+
+.card-price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2ecc71;
+  margin: 4px 0;
+}
+
+.card-features {
+  display: flex;
+  gap: 16px;
+  color: #555;
+  font-size: 14px;
+}
+
+.card-config {
+  color: #666;
+  font-size: 13px;
+  margin: 0;
+}
+
+.card-builder {
+  color: #888;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .properties-page {
+    flex-direction: column;
+  }
+  
+  .filters-sidebar {
+    width: 100%;
+    position: static;
+  }
+  
+  .card-image {
+    width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .property-card-horizontal {
+    flex-direction: column;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 200px;
+  }
+}
