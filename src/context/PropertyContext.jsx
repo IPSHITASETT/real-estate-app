@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import propertiesRaw from '../data/properties.json';
 import { filterProperties } from '../utils/helpers';
 import { generateId } from '../utils/helpers';
@@ -15,6 +15,40 @@ export const PropertyProvider = ({ children }) => {
     maxPrice: '',
   });
   const [viewMode, setViewMode] = useState('list');
+  
+  // Wishlist state
+  const [wishlist, setWishlist] = useState(() => {
+    const stored = localStorage.getItem('re_wishlist');
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  // Persist wishlist to localStorage
+  useEffect(() => {
+    localStorage.setItem('re_wishlist', JSON.stringify(wishlist));
+  }, [wishlist]);
+
+  const addToWishlist = useCallback((propertyId) => {
+    setWishlist((prev) => {
+      if (prev.includes(propertyId)) return prev;
+      return [...prev, propertyId];
+    });
+  }, []);
+
+  const removeFromWishlist = useCallback((propertyId) => {
+    setWishlist((prev) => prev.filter((id) => id !== propertyId));
+  }, []);
+
+  const isInWishlist = useCallback((propertyId) => {
+    return wishlist.includes(propertyId);
+  }, [wishlist]);
+
+  const toggleWishlist = useCallback((propertyId) => {
+    if (wishlist.includes(propertyId)) {
+      removeFromWishlist(propertyId);
+    } else {
+      addToWishlist(propertyId);
+    }
+  }, [wishlist, addToWishlist, removeFromWishlist]);
 
   const filteredProperties = filterProperties(properties, filters);
 
@@ -69,6 +103,11 @@ export const PropertyProvider = ({ children }) => {
         approveProperty,
         rejectProperty,
         addInquiry,
+        wishlist,
+        addToWishlist,
+        removeFromWishlist,
+        isInWishlist,
+        toggleWishlist,
       }}
     >
       {children}

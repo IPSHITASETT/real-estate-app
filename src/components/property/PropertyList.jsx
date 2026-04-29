@@ -4,7 +4,7 @@ import { usePropertyContext } from '../../context/PropertyContext';
 import './PropertyList.css';
 
 const PropertyList = ({ showViewAll = true, limit = 8 }) => {
-  const { filteredProperties } = usePropertyContext();
+  const { filteredProperties, toggleWishlist, isInWishlist } = usePropertyContext();
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -22,6 +22,11 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
 
   const handleViewAll = () => {
     navigate('/properties');
+  };
+
+  const handleWishlistClick = (e, propertyId) => {
+    e.stopPropagation();
+    toggleWishlist(propertyId);
   };
 
   if (!filteredProperties || filteredProperties.length === 0) {
@@ -65,6 +70,13 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
               <div key={property.id} className="property-card">
                 <div className="property-image">
                   <img src={property.image} alt={property.title} />
+                  <button 
+                    className={`wishlist-btn ${isInWishlist(property.id) ? 'active' : ''}`}
+                    onClick={(e) => handleWishlistClick(e, property.id)}
+                    title={isInWishlist(property.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                  >
+                    {isInWishlist(property.id) ? '❤️' : '🤍'}
+                  </button>
                 </div>
                 <div className="property-details">
                   <h3>{property.title}</h3>

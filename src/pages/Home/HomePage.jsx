@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import HeroSection from '../../components/property/HeroSection';
 import PropertyList from '../../components/property/PropertyList';
 import PremiumPropertyCard from '../../components/property/PremiumPropertyCard';
+import WishlistSection from '../../components/property/WishlistSection';
 import MapView from '../../components/property/MapView';
 import './HomePage.css';
 
@@ -45,6 +46,9 @@ const HomePage = () => {
 
       {/* Premium Property Card */}
       <PremiumPropertyCard />
+
+      {/* Wishlist Section - Only shows if there are items in wishlist */}
+      <WishlistSection />
     </>
   );
 };
