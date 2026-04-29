@@ -1,0 +1,21 @@
+/* Home Page Styles */
+.properties-section {
+  padding: 40px 5%;
+  background: #f9f9f9;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-header h2 {
+  font-size: 32px;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.section-header p {
+  color: #666;
+  font-size: 16px;
+}

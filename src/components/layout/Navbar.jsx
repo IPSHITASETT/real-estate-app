@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,11 +13,11 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, login, logout } = useAuthContext();
   const navigate = useNavigate();
 
   const toggleDrawer = () => setOpen(!open);

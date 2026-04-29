@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import heroImg from '../../assets/hero.jpg';
 import './HeroSection.css';
 
 const HeroSection = () => {
@@ -36,7 +37,9 @@ const HeroSection = () => {
   return (
     <section className="hero-section">
       {/* Background with Overlay */}
-      <div className="hero-background">
+      <div className="hero-background" style={{
+    backgroundImage: `url(${heroImg})`
+  }}>
         <div className="hero-overlay"></div>
       </div>
 
