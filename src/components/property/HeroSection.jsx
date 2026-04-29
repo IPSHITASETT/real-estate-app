@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { usePropertyContext } from '../../context/PropertyContext';
 import heroImg from '../../assets/hero.jpg';
 import './HeroSection.css';
 
 const HeroSection = () => {
-  const [searchFilters, setSearchFilters] = useState({
+  const { setFilters } = usePropertyContext();
+
+  const [searchFilters, setSearchFilters] = React.useState({
     location: '',
     configuration: '',
     minBudget: '',
@@ -30,8 +33,23 @@ const HeroSection = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log('Search Filters:', searchFilters);
-    // Trigger search via context or navigate with query params
+    
+    // Map hero filters to context filters
+    const configArray = searchFilters.configuration 
+      ? [searchFilters.configuration.toUpperCase()] 
+      : [];
+    
+    const possessionArray = searchFilters.possession 
+      ? [searchFilters.possession === 'ready' ? 'Ready' : searchFilters.possession === '6months' ? '6 months' : searchFilters.possession === '1year' ? '1 year' : '']
+      : [];
+
+    setFilters({
+      city: searchFilters.location,
+      configuration: configArray,
+      possession: possessionArray,
+      minPrice: searchFilters.minBudget,
+      maxPrice: searchFilters.maxBudget,
+    });
   };
 
   return (
