@@ -14,6 +14,7 @@ const PropertiesPage = () => {
     minPrice: searchParams.get('minPrice') || '',
     maxPrice: searchParams.get('maxPrice') || '',
     isPremium: searchParams.get('isPremium') === 'true',
+    type: searchParams.get('type') || '',
   });
 
   // Apply filters from URL on mount
@@ -24,6 +25,7 @@ const PropertiesPage = () => {
     const minPrice = searchParams.get('minPrice') || '';
     const maxPrice = searchParams.get('maxPrice') || '';
     const isPremium = searchParams.get('isPremium') === 'true';
+    const type = searchParams.get('type') || '';
 
     setFilters({
       city,
@@ -32,6 +34,7 @@ const PropertiesPage = () => {
       minPrice,
       maxPrice,
       isPremium,
+      type,
     });
   }, []);
 
@@ -60,12 +63,13 @@ const PropertiesPage = () => {
     if (localFilters.minPrice) params.set('minPrice', localFilters.minPrice);
     if (localFilters.maxPrice) params.set('maxPrice', localFilters.maxPrice);
     if (localFilters.isPremium) params.set('isPremium', 'true');
+    if (localFilters.type) params.set('type', localFilters.type);
     
     setSearchParams(params);
   };
 
   const clearFilters = () => {
-    const empty = { city: '', configuration: [], possession: [], minPrice: '', maxPrice: '', isPremium: false };
+    const empty = { city: '', configuration: [], possession: [], minPrice: '', maxPrice: '', isPremium: false, type: '' };
     setLocalFilters(empty);
     setFilters(empty);
     setSearchParams({});
@@ -90,7 +94,9 @@ const PropertiesPage = () => {
     
     const matchPremium = !localFilters.isPremium || p.isPremium;
     
-    return matchCity && matchConfig && matchPossession && matchMinPrice && matchMaxPrice && matchPremium;
+    const matchType = !localFilters.type || p.type === localFilters.type;
+    
+    return matchCity && matchConfig && matchPossession && matchMinPrice && matchMaxPrice && matchPremium && matchType;
   });
 
   return (
@@ -172,6 +178,28 @@ const PropertiesPage = () => {
             />
             Premium Properties Only
           </label>
+        </div>
+
+        <div className="filter-section">
+          <label>Property Type</label>
+          <div className="checkbox-list">
+            {['Residential Apartment', 'Villa', 'Independent House', 'Office Space', 'Commercial Space', 'Residential Land', 'Penthouse'].map(type => (
+              <label key={type} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={localFilters.type === type}
+                  onChange={() => {
+                    if (localFilters.type === type) {
+                      handleFilterChange('type', '');
+                    } else {
+                      handleFilterChange('type', type);
+                    }
+                  }}
+                />
+                {type}
+              </label>
+            ))}
+          </div>
         </div>
 
         <button className="apply-btn" onClick={applyFilters}>
