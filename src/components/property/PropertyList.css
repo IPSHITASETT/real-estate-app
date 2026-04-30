@@ -10,6 +10,14 @@
   margin-bottom: 20px;
 }
 
+@media (max-width: 768px) {
+  .property-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
 .view-all-btn {
   background: #1976d2;
   color: white;
@@ -200,9 +208,24 @@
   font-size: 16px;
 }
 
-.no-properties {
-  text-align: center;
-  padding: 40px;
-  color: #666;
-  font-size: 16px;
+@media (max-width: 900px) {
+  .carousel-wrapper {
+    display: block;
+  }
+
+  .carousel-track {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    transform: none !important;
+  }
+
+  .property-card {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .carousel-btn {
+    display: none;
+  }
 }
