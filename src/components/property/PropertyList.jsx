@@ -4,7 +4,7 @@ import { usePropertyContext } from '../../context/PropertyContext';
 import './PropertyList.css';
 
 const PropertyList = ({ showViewAll = true, limit = 8 }) => {
-  const { filteredProperties, toggleWishlist, isInWishlist } = usePropertyContext();
+  const { filteredProperties, toggleWishlist, isInWishlist, filters } = usePropertyContext();
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -20,8 +20,21 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
     setCurrentIndex(prev => Math.min(maxIndex, prev + cardsPerView));
   };
 
+  const buildQueryString = (filters) => {
+    const params = new URLSearchParams();
+    if (filters.city) params.set('city', filters.city);
+    if (filters.configuration?.length) params.set('configuration', filters.configuration.join(','));
+    if (filters.possession?.length) params.set('possession', filters.possession.join(','));
+    if (filters.minPrice) params.set('minPrice', filters.minPrice);
+    if (filters.maxPrice) params.set('maxPrice', filters.maxPrice);
+    if (filters.isPremium) params.set('isPremium', 'true');
+    if (filters.type) params.set('type', filters.type);
+    return params.toString();
+  };
+
   const handleViewAll = () => {
-    navigate('/properties');
+    const queryString = buildQueryString(filters);
+    navigate(`/properties${queryString ? `?${queryString}` : ''}`);
   };
 
   const handleWishlistClick = (e, propertyId) => {

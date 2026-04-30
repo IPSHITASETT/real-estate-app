@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { usePropertyContext } from '../../context/PropertyContext';
 import './PropertiesPage.css';
 
@@ -27,7 +27,7 @@ const PropertiesPage = () => {
     const isPremium = searchParams.get('isPremium') === 'true';
     const type = searchParams.get('type') || '';
 
-    setFilters({
+    const paramsState = {
       city,
       configuration,
       possession,
@@ -35,8 +35,11 @@ const PropertiesPage = () => {
       maxPrice,
       isPremium,
       type,
-    });
-  }, []);
+    };
+
+    setLocalFilters(paramsState);
+    setFilters(paramsState);
+  }, [searchParams, setFilters]);
 
   const handleFilterChange = (field, value) => {
     setLocalFilters(prev => ({ ...prev, [field]: value }));
@@ -81,7 +84,8 @@ const PropertiesPage = () => {
     
     const matchCity = !localFilters.city || 
       p.city.toLowerCase().includes(localFilters.city.toLowerCase()) ||
-      p.locality.toLowerCase().includes(localFilters.city.toLowerCase());
+      p.locality.toLowerCase().includes(localFilters.city.toLowerCase()) ||
+      p.state.toLowerCase().includes(localFilters.city.toLowerCase());
     
     const matchConfig = localFilters.configuration.length === 0 ||
       localFilters.configuration.includes(p.configuration);

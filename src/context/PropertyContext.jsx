@@ -13,6 +13,8 @@ export const PropertyProvider = ({ children }) => {
     possession: [],
     minPrice: '',
     maxPrice: '',
+    isPremium: false,
+    type: '',
   });
   const [viewMode, setViewMode] = useState('list');
   

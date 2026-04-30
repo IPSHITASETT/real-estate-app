@@ -43,13 +43,17 @@ const HeroSection = () => {
       ? [searchFilters.possession === 'ready' ? 'Ready' : searchFilters.possession === '6months' ? '6 months' : searchFilters.possession === '1year' ? '1 year' : '']
       : [];
 
-    setFilters({
+    const newFilters = {
       city: searchFilters.location,
       configuration: configArray,
       possession: possessionArray,
       minPrice: searchFilters.minBudget,
       maxPrice: searchFilters.maxBudget,
-    });
+      isPremium: false,
+      type: '',
+    };
+
+    setFilters(newFilters);
   };
 
   return (

@@ -19,7 +19,18 @@ export const filterProperties = (properties, filters) => {
     const matchMinPrice = !filters.minPrice || p.price >= Number(filters.minPrice);
     const matchMaxPrice = !filters.maxPrice || p.price <= Number(filters.maxPrice);
 
-    return matchCity && matchConfig && matchPossession && matchMinPrice && matchMaxPrice;
+    const matchPremium = !filters.isPremium || p.isPremium;
+    const matchType = !filters.type || filters.type === '' || p.type === filters.type;
+
+    return (
+      matchCity &&
+      matchConfig &&
+      matchPossession &&
+      matchMinPrice &&
+      matchMaxPrice &&
+      matchPremium &&
+      matchType
+    );
   });
 };
 
