@@ -57,6 +57,18 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
     navigate(`/property/${propertyId}`);
   };
 
+  const hasActiveFilters = () => {
+    return Boolean(
+      filters.city ||
+      filters.type ||
+      filters.minPrice ||
+      filters.maxPrice ||
+      filters.isPremium ||
+      (filters.configuration?.length > 0) ||
+      (filters.possession?.length > 0)
+    );
+  };
+
   if (!filteredProperties || filteredProperties.length === 0) {
     return (
       <div className="property-list">
@@ -69,7 +81,11 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
     <div className="property-list-container">
       {showViewAll && (
         <div className="property-list-header">
-          <h3>{filteredProperties.length} Properties Found</h3>
+          <h3>
+            {hasActiveFilters()
+              ? `${filteredProperties.length} Properties Found`
+              : 'Time to Meet Your New Home With Us.'}
+          </h3>
           <button className="view-all-btn" onClick={handleViewAll}>
             View All Properties →
           </button>

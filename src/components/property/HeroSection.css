@@ -140,23 +140,22 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border-radius: 20px;
-  padding: 30px 35px;
+  padding: 30px 25px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 .search-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 20px;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  align-items: end;
 }
 
 .search-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex: 1;
-  min-width: 100px;
+  min-width: 0;
 }
 
 .search-field label {
@@ -168,19 +167,17 @@
 }
 
 .search-field.location-field {
-  flex: 1.5;
-  min-width: 140px;
+  min-width: 200px;
 }
 
 .search-field.budget-field {
-  flex: 1.3;
-  min-width: 130px;
+  min-width: 220px;
 }
 
 .budget-inputs {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .budget-inputs input {
@@ -216,12 +213,12 @@
 }
 
 .search-btn-field {
-  flex: 0 0 auto;
   display: flex;
   flex-direction: row;
   gap: 10px;
-  flex-shrink: 0;
-  align-items: flex-end;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: stretch;
 }
 
 .reset-btn {
@@ -246,6 +243,7 @@
   .hero-main {
     flex-direction: column;
     text-align: center;
+    align-items: center;
   }
 
   .hero-left {
@@ -256,8 +254,12 @@
     font-size: 2.8rem;
   }
 
+  .hero-right {
+    width: 100%;
+  }
+
   .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .stat-card {
@@ -280,16 +282,18 @@
   }
 
   .search-row {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
-  .search-field {
+  .search-field,
+  .search-btn-field {
     width: 100%;
-    min-width: 100%;
+    min-width: 0;
   }
 
   .search-btn-field {
-    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .search-btn-field button {

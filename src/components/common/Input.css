@@ -5,6 +5,7 @@
 
 .input-field {
   width: 100%;
+  box-sizing: border-box;
   padding: 14px 16px;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
