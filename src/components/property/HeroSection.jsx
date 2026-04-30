@@ -193,9 +193,10 @@ const HeroSection = () => {
                 type="button" 
                 variant="secondary" 
                 size="large"
+                className="reset-btn"
                 onClick={handleClearFilters}
               >
-                Clear Filters
+                Reset
               </Button>
             </div>
           </div>

@@ -148,7 +148,7 @@
   display: flex;
   align-items: flex-end;
   gap: 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .search-field {
@@ -156,7 +156,7 @@
   flex-direction: column;
   gap: 8px;
   flex: 1;
-  min-width: 150px;
+  min-width: 100px;
 }
 
 .search-field label {
@@ -169,12 +169,12 @@
 
 .search-field.location-field {
   flex: 1.5;
-  min-width: 220px;
+  min-width: 140px;
 }
 
 .search-field.budget-field {
   flex: 1.3;
-  min-width: 200px;
+  min-width: 130px;
 }
 
 .budget-inputs {
@@ -218,8 +218,21 @@
 .search-btn-field {
   flex: 0 0 auto;
   display: flex;
+  flex-direction: row;
   gap: 10px;
   flex-shrink: 0;
+  align-items: flex-end;
+}
+
+.reset-btn {
+  background-color: #f1f5f9;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+}
+
+.reset-btn:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
 }
 
 .search-btn-field button {
