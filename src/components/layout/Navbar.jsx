@@ -52,7 +52,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ background: "#1976d2" }}>
+      <AppBar position="sticky" sx={{ top: 0, zIndex: 1100, background: "#1976d2" }}>
         <Toolbar>
           {/* Logo */}
           <Typography
