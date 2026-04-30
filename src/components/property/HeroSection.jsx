@@ -56,6 +56,26 @@ const HeroSection = () => {
     setFilters(newFilters);
   };
 
+  const handleClearFilters = () => {
+    const emptyFilters = {
+      location: '',
+      configuration: '',
+      minBudget: '',
+      maxBudget: '',
+      possession: ''
+    };
+    setSearchFilters(emptyFilters);
+    setFilters({
+      city: '',
+      configuration: [],
+      possession: [],
+      minPrice: '',
+      maxPrice: '',
+      isPremium: false,
+      type: '',
+    });
+  };
+
   return (
     <section className="hero-section">
       {/* Background with Overlay */}
@@ -167,7 +187,15 @@ const HeroSection = () => {
             {/* Search Button */}
             <div className="search-field search-btn-field">
               <Button type="submit" variant="primary" size="large">
-                Search Properties
+                Search
+              </Button>
+              <Button 
+                type="button" 
+                variant="secondary" 
+                size="large"
+                onClick={handleClearFilters}
+              >
+                Clear Filters
               </Button>
             </div>
           </div>
