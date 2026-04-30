@@ -21,7 +21,9 @@ export const PropertyProvider = ({ children }) => {
   // Wishlist state
   const [wishlist, setWishlist] = useState(() => {
     const stored = localStorage.getItem('re_wishlist');
-    return stored ? JSON.parse(stored) : [];
+    const parsed = stored ? JSON.parse(stored) : [];
+    // Ensure all IDs are numbers
+    return parsed.map(id => Number(id));
   });
 
   // Persist wishlist to localStorage
@@ -30,25 +32,29 @@ export const PropertyProvider = ({ children }) => {
   }, [wishlist]);
 
   const addToWishlist = useCallback((propertyId) => {
+    const id = Number(propertyId);
     setWishlist((prev) => {
-      if (prev.includes(propertyId)) return prev;
-      return [...prev, propertyId];
+      if (prev.includes(id)) return prev;
+      return [...prev, id];
     });
   }, []);
 
   const removeFromWishlist = useCallback((propertyId) => {
-    setWishlist((prev) => prev.filter((id) => id !== propertyId));
+    const id = Number(propertyId);
+    setWishlist((prev) => prev.filter((itemId) => itemId !== id));
   }, []);
 
   const isInWishlist = useCallback((propertyId) => {
-    return wishlist.includes(propertyId);
+    const id = Number(propertyId);
+    return wishlist.includes(id);
   }, [wishlist]);
 
   const toggleWishlist = useCallback((propertyId) => {
-    if (wishlist.includes(propertyId)) {
-      removeFromWishlist(propertyId);
+    const id = Number(propertyId);
+    if (wishlist.includes(id)) {
+      removeFromWishlist(id);
     } else {
-      addToWishlist(propertyId);
+      addToWishlist(id);
     }
   }, [wishlist, addToWishlist, removeFromWishlist]);
 

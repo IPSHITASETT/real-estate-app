@@ -7,12 +7,16 @@ const WishlistSection = () => {
   const navigate = useNavigate();
   const { wishlist, allProperties, removeFromWishlist } = usePropertyContext();
 
-  // Get wishlist properties
-  const wishlistProperties = allProperties.filter(p => wishlist.includes(p.id));
+  // Get wishlist properties - filter out invalid IDs
+  const wishlistProperties = allProperties.filter(p => wishlist.includes(p.id) && p.isApproved);
+
+  const handleCardClick = (propertyId) => {
+    navigate(`/property/${Number(propertyId)}`);
+  };
 
   const handleRemove = (e, propertyId) => {
     e.stopPropagation();
-    removeFromWishlist(propertyId);
+    removeFromWishlist(Number(propertyId));
   };
 
   const handleViewAll = () => {
@@ -32,7 +36,7 @@ const WishlistSection = () => {
 
       <div className="wishlist-grid">
         {wishlistProperties.map(property => (
-          <div key={property.id} className="wishlist-card">
+          <div key={property.id} className="wishlist-card" onClick={() => handleCardClick(property.id)}>
             <div className="wishlist-image">
               <img src={property.image} alt={property.title} />
               <button 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { usePropertyContext } from '../../context/PropertyContext';
 import { useAuthContext } from '../../context/AuthContext';
@@ -21,6 +21,11 @@ const PropertyDetailsPage = () => {
   const [scheduleDate, setScheduleDate] = useState('');
   const [scheduleTime, setScheduleTime] = useState('');
   const [inquiryMessage, setInquiryMessage] = useState('');
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!property) {
     return (
