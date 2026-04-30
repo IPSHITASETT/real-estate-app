@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePropertyContext } from '../../context/PropertyContext';
+import { useAuthContext } from '../../context/AuthContext';
+import { useNotificationContext } from '../../context/NotificationContext';
 import './PropertyList.css';
 
 const PropertyList = ({ showViewAll = true, limit = 8 }) => {
   const { filteredProperties, toggleWishlist, isInWishlist, filters } = usePropertyContext();
+  const { user } = useAuthContext();
+  const { notify } = useNotificationContext();
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -39,7 +43,14 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
 
   const handleWishlistClick = (e, propertyId) => {
     e.stopPropagation();
+    if (!user) {
+      notify.info('Please login to save favorite properties');
+      navigate('/login');
+      return;
+    }
+    const currentlySaved = isInWishlist(propertyId);
     toggleWishlist(propertyId);
+    notify.success(currentlySaved ? 'Removed from favorites' : 'Saved to favorites');
   };
 
   const handleCardClick = (propertyId) => {
@@ -108,6 +119,9 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
                     <span>🚿 {property.bathrooms} Baths</span>
                     <span>📐 {property.sqft} sqft</span>
                   </div>
+                  <button className="details-btn" onClick={(e) => { e.stopPropagation(); handleCardClick(property.id); }}>
+                    View Details
+                  </button>
                 </div>
               </div>
             ))}

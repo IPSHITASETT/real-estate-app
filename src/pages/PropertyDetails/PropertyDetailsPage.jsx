@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { usePropertyContext } from '../../context/PropertyContext';
 import { useAuthContext } from '../../context/AuthContext';
+import { useNotificationContext } from '../../context/NotificationContext';
 import './PropertyDetailsPage.css';
 
 const PropertyDetailsPage = () => {
@@ -9,6 +10,8 @@ const PropertyDetailsPage = () => {
   const navigate = useNavigate();
   const { allProperties, addInquiry, toggleWishlist, isInWishlist } = usePropertyContext();
   const { user } = useAuthContext();
+  const { notify } = useNotificationContext();
+  const location = useLocation();
   
   const property = allProperties.find(p => p.id === Number(id));
   
@@ -30,7 +33,8 @@ const PropertyDetailsPage = () => {
 
   const handleSchedule = (type) => {
     if (!user) {
-      alert('Please login to schedule an appointment');
+      notify.error('Please login to schedule an appointment');
+      navigate('/login', { state: { from: location }, replace: true });
       return;
     }
     setScheduleType(type);
@@ -39,7 +43,7 @@ const PropertyDetailsPage = () => {
 
   const handleSubmitSchedule = () => {
     if (!scheduleDate || !scheduleTime) {
-      alert('Please select date and time');
+      notify.error('Please select date and time');
       return;
     }
     
@@ -53,7 +57,7 @@ const PropertyDetailsPage = () => {
       userId: user?.id,
     });
     
-    alert(`${scheduleType === 'video' ? 'Video Call' : 'Site Visit'} scheduled for ${scheduleDate} at ${scheduleTime}`);
+    notify.success(`${scheduleType === 'video' ? 'Video Call' : 'Site Visit'} scheduled for ${scheduleDate} at ${scheduleTime}`);
     setShowScheduleModal(false);
     setScheduleDate('');
     setScheduleTime('');
@@ -61,11 +65,12 @@ const PropertyDetailsPage = () => {
 
   const handleInquiry = () => {
     if (!user) {
-      alert('Please login to send an inquiry');
+      notify.error('Please login to send an inquiry');
+      navigate('/login', { state: { from: location }, replace: true });
       return;
     }
     if (!inquiryMessage.trim()) {
-      alert('Please enter a message');
+      notify.error('Please enter a message');
       return;
     }
     
@@ -76,7 +81,7 @@ const PropertyDetailsPage = () => {
       date: new Date().toISOString(),
     });
     
-    alert('Inquiry sent successfully!');
+    notify.success('Inquiry sent successfully!');
     setInquiryMessage('');
   };
 
@@ -94,7 +99,16 @@ const PropertyDetailsPage = () => {
           {property.isPremium && <span className="premium-badge">Premium</span>}
           <button 
             className={`wishlist-btn ${isInWishlist(property.id) ? 'active' : ''}`}
-            onClick={() => toggleWishlist(property.id)}
+            onClick={() => {
+              if (!user) {
+                notify.info('Please login to save favorites');
+                navigate('/login', { state: { from: location }, replace: true });
+                return;
+              }
+              const currentlySaved = isInWishlist(property.id);
+              toggleWishlist(property.id);
+              notify.success(currentlySaved ? 'Removed from favorites' : 'Saved to favorites');
+            }}
           >
             {isInWishlist(property.id) ? '❤️' : '🤍'}
           </button>

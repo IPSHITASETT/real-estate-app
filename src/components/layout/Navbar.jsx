@@ -17,13 +17,13 @@ import { useAuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { user, login, logout } = useAuthContext();
+  const { user, logout } = useAuthContext();
   const navigate = useNavigate();
 
   const toggleDrawer = () => setOpen(!open);
 
   const handleLogin = () => {
-    login(); // mock login
+    navigate('/login');
   };
 
   const handleLogout = () => {
@@ -32,11 +32,23 @@ const Navbar = () => {
   };
 
   const menuItems = [
-    { label: "Home", path: "/" },
-    { label: "Buy", path: "/" },
-    { label: "Sell", path: "/seller" },
-    { label: "Admin", path: "/admin" }
+    { label: 'Home', path: '/' },
+    { label: 'Buy', path: '/' },
+    { label: 'Sell', path: '/seller' },
+    { label: 'Admin', path: '/admin' },
   ];
+
+  const dashboardRoute = user
+    ? user.role === 'seller'
+      ? { label: 'Dashboard', path: '/seller' }
+      : user.role === 'admin'
+      ? { label: 'Admin Panel', path: '/admin' }
+      : { label: 'Dashboard', path: '/buyer' }
+    : null;
+
+  if (dashboardRoute) {
+    menuItems.push(dashboardRoute);
+  }
 
   return (
     <>

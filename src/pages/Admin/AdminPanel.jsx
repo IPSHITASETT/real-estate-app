@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { usePropertyContext } from '../../context/PropertyContext';
 import { useAuthContext } from '../../context/AuthContext';
+import { useNotificationContext } from '../../context/NotificationContext';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
   const { allProperties, setPropertyApproval, inquiries, appointments } = usePropertyContext();
   const { users } = useAuthContext();
+  const { notify } = useNotificationContext();
   
   const [activeTab, setActiveTab] = useState('properties');
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -31,20 +33,19 @@ const AdminPanel = () => {
 
   const handleApprove = (propertyId) => {
     setPropertyApproval(propertyId, true);
-    alert('Property approved successfully!');
+    notify.success('Property approved successfully!');
   };
 
   const handleReject = (propertyId) => {
     if (window.confirm('Are you sure you want to reject this property?')) {
       setPropertyApproval(propertyId, false);
-      alert('Property rejected!');
+      notify.error('Property rejected!');
     }
   };
 
   const handleDelete = (propertyId) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
-      // In a real app, this would delete from database
-      alert('Property deleted!');
+      notify.info('Property deleted from the admin dashboard (UI only).');
     }
   };
 

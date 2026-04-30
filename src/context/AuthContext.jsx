@@ -17,9 +17,19 @@ export const AuthProvider = ({ children }) => {
 
   const login = useCallback((role = 'buyer') => {
     const mockUser = MOCK_USERS.find((u) => u.role === role) || MOCK_USERS[0];
-    setUser(mockUser);
-    localStorage.setItem('re_user', JSON.stringify(mockUser));
+    const authenticatedUser = {
+      ...mockUser,
+      authProvider: 'google',
+      lastLoginAt: new Date().toISOString(),
+    };
+
+    setUser(authenticatedUser);
+    localStorage.setItem('re_user', JSON.stringify(authenticatedUser));
   }, []);
+
+  const loginWithGoogle = useCallback((role = 'buyer') => {
+    login(role);
+  }, [login]);
 
   const logout = useCallback(() => {
     setUser(null);
@@ -51,14 +61,15 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ 
       user, 
-      login, 
-      logout, 
-      updateUser, 
+      login,
+      loginWithGoogle,
+      logout,
+      updateUser,
       registerUser,
       users,
-      isBuyer, 
-      isSeller, 
-      isAdmin 
+      isBuyer,
+      isSeller,
+      isAdmin
     }}>
       {children}
     </AuthContext.Provider>

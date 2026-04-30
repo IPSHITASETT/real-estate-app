@@ -13,6 +13,12 @@ const SellerDashboard = () => {
   
   // Get seller's properties
   const sellerProperties = allProperties.filter(p => p.sellerId === user?.id);
+  const sellerInquiries = sellerProperties.flatMap(property =>
+    (property.inquiries || []).map(inquiry => ({ ...inquiry, property }))
+  );
+  const sellerAppointments = sellerProperties.flatMap(property =>
+    (property.inquiries || []).filter(i => i.type === 'appointment').map(appointment => ({ ...appointment, property }))
+  );
   
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -21,19 +27,30 @@ const SellerDashboard = () => {
     price: '',
     location: '',
     city: '',
+    state: '',
     locality: '',
+    phone: '',
     type: 'Residential Apartment',
     configuration: '2BHK',
     bedrooms: 2,
     bathrooms: 2,
     sqft: '',
     possession: 'Ready',
+    buildingVideoUrl: '',
+    flatVideoUrl: '',
     isPremium: false,
     payRegistrationFee: false,
   });
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked, files } = e.target;
+    if (type === 'file') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: files?.[0]?.name || ''
+      }));
+      return;
+    }
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -63,6 +80,10 @@ const SellerDashboard = () => {
       sellerName: user?.name,
       price,
       priceLabel,
+      state: formData.state,
+      phone: formData.phone || user?.email,
+      buildingVideo: formData.buildingVideoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      flatVideo: formData.flatVideoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ',
       image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400',
       isApproved: false, // Requires admin approval
       inquiries: [],
@@ -78,13 +99,18 @@ const SellerDashboard = () => {
       price: '',
       location: '',
       city: '',
+      state: '',
       locality: '',
+      phone: '',
       type: 'Residential Apartment',
       configuration: '2BHK',
       bedrooms: 2,
       bathrooms: 2,
       sqft: '',
       possession: 'Ready',
+      buildingVideoUrl: '',
+      flatVideoUrl: '',
+      videoFile: '',
       isPremium: false,
       payRegistrationFee: false,
     });
@@ -230,6 +256,17 @@ const SellerDashboard = () => {
                   />
                 </div>
                 <div className="form-group">
+                  <label>State *</label>
+                  <input
+                    type="text"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    placeholder="e.g., Karnataka"
+                    required
+                  />
+                </div>
+                <div className="form-group">
                   <label>Locality</label>
                   <input
                     type="text"
@@ -237,6 +274,16 @@ const SellerDashboard = () => {
                     value={formData.locality}
                     onChange={handleInputChange}
                     placeholder="e.g., Koramangala"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Contact Phone</label>
+                  <input
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="e.g., +91-9876543210"
                   />
                 </div>
                 <div className="form-group full-width">
@@ -293,6 +340,42 @@ const SellerDashboard = () => {
                     <option value="1 year">Within 1 Year</option>
                     <option value="2 years">Within 2 Years</option>
                   </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="form-section">
+              <h3>Upload Videos</h3>
+              <div className="form-grid">
+                <div className="form-group">
+                  <label>Building & Locality Video URL</label>
+                  <input
+                    type="text"
+                    name="buildingVideoUrl"
+                    value={formData.buildingVideoUrl}
+                    onChange={handleInputChange}
+                    placeholder="YouTube embed URL or video link"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Sample Flat Video URL</label>
+                  <input
+                    type="text"
+                    name="flatVideoUrl"
+                    value={formData.flatVideoUrl}
+                    onChange={handleInputChange}
+                    placeholder="YouTube embed URL or video link"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Upload Video File</label>
+                  <input
+                    type="file"
+                    name="videoFile"
+                    accept="video/*"
+                    onChange={handleInputChange}
+                  />
+                  {formData.videoFile && <small>Selected: {formData.videoFile}</small>}
                 </div>
               </div>
             </div>
@@ -397,6 +480,43 @@ const SellerDashboard = () => {
             <p>You haven't listed any properties yet.</p>
             <button onClick={() => setShowAddForm(true)}>List Your First Property</button>
           </div>
+        )}
+      </div>
+
+      <div className="seller-inquiries">
+        <h2>Buyer Inquiries</h2>
+        {sellerInquiries.length > 0 ? (
+          <div className="inquiries-list">
+            {sellerInquiries.map((inquiry, index) => (
+              <div key={index} className="inquiry-card">
+                <h3>{inquiry.property.title}</h3>
+                <p>{inquiry.message || 'No message provided.'}</p>
+                <p><strong>Type:</strong> {inquiry.type}</p>
+                <p><strong>Date:</strong> {new Date(inquiry.date).toLocaleString()}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No buyer inquiries yet.</p>
+        )}
+      </div>
+
+      <div className="seller-appointments">
+        <h2>Scheduled Appointments</h2>
+        {sellerAppointments.length > 0 ? (
+          <div className="appointments-list">
+            {sellerAppointments.map((appointment, index) => (
+              <div key={index} className="appointment-card">
+                <h3>{appointment.property.title}</h3>
+                <p><strong>Type:</strong> {appointment.scheduleType === 'video' ? 'Video Call' : 'Site Visit'}</p>
+                <p><strong>Date:</strong> {appointment.date}</p>
+                <p><strong>Time:</strong> {appointment.time}</p>
+                <p><strong>Status:</strong> {appointment.status}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No appointments scheduled yet.</p>
         )}
       </div>
     </div>

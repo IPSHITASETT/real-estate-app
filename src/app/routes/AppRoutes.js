@@ -1,12 +1,13 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "../../components/layout/Layout";
-import HomePage from "../../pages/Home/HomePage";
-import PropertiesPage from "../../pages/Properties/PropertiesPage";
-import PropertyDetailsPage from "../../pages/PropertyDetails/PropertyDetailsPage";
-import AdminPanel from "../../pages/Admin/AdminPanel";
-
-// Pages (currently simple placeholder)
-const SellerDashboard = () => <h1>Seller Dashboard</h1>;
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from '../../components/layout/Layout';
+import HomePage from '../../pages/Home/HomePage';
+import PropertiesPage from '../../pages/Properties/PropertiesPage';
+import PropertyDetailsPage from '../../pages/PropertyDetails/PropertyDetailsPage';
+import AdminPanel from '../../pages/Admin/AdminPanel';
+import SellerDashboard from '../../pages/Seller/SellerDashboard';
+import BuyerDashboard from '../../pages/Buyer/BuyerDashboard';
+import LoginPage from '../../pages/Auth/LoginPage';
+import RequireAuth from '../../components/common/RequireAuth';
 
 const AppRoutes = () => {
   return (
@@ -42,10 +43,32 @@ const AppRoutes = () => {
         />
 
         <Route
+          path="/login"
+          element={
+            <Layout>
+              <LoginPage />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/buyer"
+          element={
+            <Layout>
+              <RequireAuth allowedRoles={['buyer']}>
+                <BuyerDashboard />
+              </RequireAuth>
+            </Layout>
+          }
+        />
+
+        <Route
           path="/seller"
           element={
             <Layout>
-              <SellerDashboard />
+              <RequireAuth allowedRoles={['seller']}>
+                <SellerDashboard />
+              </RequireAuth>
             </Layout>
           }
         />
@@ -54,7 +77,18 @@ const AppRoutes = () => {
           path="/admin"
           element={
             <Layout>
-              <AdminPanel />
+              <RequireAuth allowedRoles={['admin']}>
+                <AdminPanel />
+              </RequireAuth>
+            </Layout>
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            <Layout>
+              <HomePage />
             </Layout>
           }
         />

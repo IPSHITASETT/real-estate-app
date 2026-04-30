@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { usePropertyContext } from '../../context/PropertyContext';
 import './PropertiesPage.css';
 
 const PropertiesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { allProperties, filters, setFilters } = usePropertyContext();
+  const navigate = useNavigate();
+  const { allProperties, setFilters } = usePropertyContext();
   
   const [localFilters, setLocalFilters] = useState({
     city: searchParams.get('city') || '',
@@ -242,6 +243,11 @@ const PropertiesPage = () => {
                   </div>
                   <p className="card-config">{property.configuration} | {property.possession}</p>
                   <p className="card-builder">🏗️ {property.builder}</p>
+                  <div className="card-actions">
+                    <button className="details-btn" onClick={() => navigate(`/property/${property.id}`)}>
+                      View Details
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
