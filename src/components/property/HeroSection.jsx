@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import { usePropertyContext } from '../../context/PropertyContext';
@@ -6,7 +6,7 @@ import heroImg from '../../assets/hero.jpg';
 import './HeroSection.css';
 
 const HeroSection = () => {
-  const { setFilters } = usePropertyContext();
+  const { filters, setFilters } = usePropertyContext();
 
   const [searchFilters, setSearchFilters] = React.useState({
     location: '',
@@ -15,6 +15,27 @@ const HeroSection = () => {
     maxBudget: '',
     possession: ''
   });
+
+  useEffect(() => {
+    const configuration = filters.configuration?.[0] ? filters.configuration[0].toLowerCase() : '';
+    const possession = filters.possession?.[0]
+      ? filters.possession[0] === 'Ready'
+        ? 'ready'
+        : filters.possession[0] === '6 months'
+        ? '6months'
+        : filters.possession[0] === '1 year'
+        ? '1year'
+        : ''
+      : '';
+
+    setSearchFilters({
+      location: filters.city || '',
+      configuration,
+      minBudget: filters.minPrice || '',
+      maxBudget: filters.maxPrice || '',
+      possession,
+    });
+  }, [filters]);
 
   const stats = [
     { count: '10,000+', label: 'Properties' },

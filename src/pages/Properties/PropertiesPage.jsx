@@ -43,16 +43,22 @@ const PropertiesPage = () => {
   }, [searchParams, setFilters]);
 
   const handleFilterChange = (field, value) => {
-    setLocalFilters(prev => ({ ...prev, [field]: value }));
+    setLocalFilters(prev => {
+      const updated = { ...prev, [field]: value };
+      setFilters(updated);
+      return updated;
+    });
   };
 
   const handleCheckboxChange = (field, value) => {
     setLocalFilters(prev => {
       const current = prev[field] || [];
-      const updated = current.includes(value)
+      const updatedArray = current.includes(value)
         ? current.filter(item => item !== value)
         : [...current, value];
-      return { ...prev, [field]: updated };
+      const updated = { ...prev, [field]: updatedArray };
+      setFilters(updated);
+      return updated;
     });
   };
 
