@@ -6,7 +6,10 @@ import { generateId } from '../utils/helpers';
 const PropertyContext = createContext(null);
 
 export const PropertyProvider = ({ children }) => {
-  const [properties, setProperties] = useState(propertiesRaw || []);
+  const [properties, setProperties] = useState(() => {
+    const stored = localStorage.getItem('re_properties');
+    return stored ? JSON.parse(stored) : propertiesRaw || [];
+  });
   const [filters, setFilters] = useState({
     city: '',
     configuration: [],
@@ -25,6 +28,11 @@ export const PropertyProvider = ({ children }) => {
     // Ensure all IDs are numbers
     return parsed.map(id => Number(id));
   });
+
+  // Persist properties to localStorage
+  useEffect(() => {
+    localStorage.setItem('re_properties', JSON.stringify(properties));
+  }, [properties]);
 
   // Persist wishlist to localStorage
   useEffect(() => {

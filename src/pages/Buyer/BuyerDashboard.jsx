@@ -5,10 +5,10 @@ import { usePropertyContext } from '../../context/PropertyContext';
 
 const BuyerDashboard = () => {
   const { user } = useAuthContext();
-  const { wishlist = [], allProperties = [], allAppointments = [] } = usePropertyContext();
+  const { wishlist = [], allProperties = [], appointments = [] } = usePropertyContext();
 
   const savedProperties = allProperties.filter ? allProperties.filter((property) => wishlist.includes(property.id)) : [];
-  const appointments = allAppointments.filter ? allAppointments.filter((appointment) => appointment.userId === user?.id) : [];
+  const userAppointments = appointments.filter ? appointments.filter((appointment) => appointment.userId === user?.id) : [];
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 0' }}>
@@ -27,7 +27,7 @@ const BuyerDashboard = () => {
           </div>
           <div style={{ flex: '1 1 240px', padding: 20, borderRadius: 18, background: '#f5ffef' }}>
             <h3>Scheduled Appointments</h3>
-            <p style={{ margin: 0, color: '#333' }}>{appointments.length} scheduled</p>
+            <p style={{ margin: 0, color: '#333' }}>{userAppointments.length} scheduled</p>
           </div>
         </div>
       </section>
