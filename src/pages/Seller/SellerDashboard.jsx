@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { usePropertyContext } from '../../context/PropertyContext';
 import { useAuthContext } from '../../context/AuthContext';
 import { useNotificationContext } from '../../context/NotificationContext';
@@ -7,18 +7,27 @@ import './SellerDashboard.css';
 
 const SellerDashboard = () => {
   const navigate = useNavigate();
-  const { allProperties, addProperty } = usePropertyContext();
+  const { allProperties, addProperty, addInquiry } = usePropertyContext();
   const { user, isSeller } = useAuthContext();
   const { notify } = useNotificationContext();
   
   // Get seller's properties
   const sellerProperties = allProperties.filter(p => p.sellerId === user?.id);
   const sellerInquiries = sellerProperties.flatMap(property =>
-    (property.inquiries || []).map(inquiry => ({ ...inquiry, property }))
+    (property.inquiries || [])
+      .filter(i => i.type === 'inquiry')
+      .map(inquiry => ({ ...inquiry, property }))
   );
   const sellerAppointments = sellerProperties.flatMap(property =>
     (property.inquiries || []).filter(i => i.type === 'appointment').map(appointment => ({ ...appointment, property }))
   );
+
+  // Debug: Log inquiries for debugging
+  console.log('Seller ID:', user?.id);
+  console.log('Seller Properties:', sellerProperties);
+  console.log('Seller Inquiries:', sellerInquiries);
+  console.log('All Properties:', allProperties);
+  console.log('All Inquiries:', allProperties.flatMap(p => p.inquiries || []));
   
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -123,7 +132,8 @@ const SellerDashboard = () => {
     pending: sellerProperties.filter(p => !p.isApproved).length,
     premium: sellerProperties.filter(p => p.isPremium).length,
     totalViews: sellerProperties.reduce((sum, p) => sum + (p.views || 0), 0),
-    totalInquiries: sellerProperties.reduce((sum, p) => sum + (p.inquiries?.length || 0), 0),
+    totalInquiries: sellerInquiries.length,
+    totalAppointments: sellerAppointments.length,
   };
 
   return (
@@ -174,7 +184,14 @@ const SellerDashboard = () => {
           <div className="stat-icon">💬</div>
           <div className="stat-content">
             <h3>{stats.totalInquiries}</h3>
-            <p>Inquiries</p>
+            <p>Inquiries Received</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">📅</div>
+          <div className="stat-content">
+            <h3>{stats.totalAppointments}</h3>
+            <p>Appointments</p>
           </div>
         </div>
       </div>
@@ -183,6 +200,26 @@ const SellerDashboard = () => {
       <div className="seller-actions">
         <button className="add-property-btn" onClick={() => setShowAddForm(!showAddForm)}>
           {showAddForm ? '✕ Cancel' : '+ Add New Property'}
+        </button>
+        {/* Temporary test button */}
+        <button 
+          className="add-property-btn" 
+          style={{ background: '#ff9800', marginLeft: '10px' }}
+          onClick={() => {
+            // Add test inquiry to first property
+            if (sellerProperties.length > 0) {
+              addInquiry(sellerProperties[0].id, {
+                type: 'inquiry',
+                message: 'Test inquiry from buyer',
+                userId: 'user_001',
+                buyerName: 'Amit Sharma',
+                date: new Date().toISOString(),
+              });
+              notify.success('Test inquiry added!');
+            }
+          }}
+        >
+          Add Test Inquiry
         </button>
       </div>
 
@@ -484,20 +521,54 @@ const SellerDashboard = () => {
       </div>
 
       <div className="seller-inquiries">
-        <h2>Buyer Inquiries</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+          <h2>Recent Inquiries</h2>
+          {sellerInquiries.length > 0 && (
+            <Link 
+              to="/seller/inquiries" 
+              style={{ color: '#1976d2', textDecoration: 'none', fontWeight: 600 }}
+            >
+              View All →
+            </Link>
+          )}
+        </div>
         {sellerInquiries.length > 0 ? (
           <div className="inquiries-list">
-            {sellerInquiries.map((inquiry, index) => (
-              <div key={index} className="inquiry-card">
-                <h3>{inquiry.property.title}</h3>
-                <p>{inquiry.message || 'No message provided.'}</p>
-                <p><strong>Type:</strong> {inquiry.type}</p>
-                <p><strong>Date:</strong> {new Date(inquiry.date).toLocaleString()}</p>
+            {sellerInquiries.slice(0, 3).map((inquiry, index) => (
+              <div key={index} className="inquiry-card" style={{ padding: 20, borderRadius: 16, border: '1px solid #e0e0e0', background: '#fafafa', marginBottom: 16 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 12 }}>
+                  <h3 style={{ margin: 0 }}>{inquiry.property.title}</h3>
+                  <span style={{ background: '#e3f2fd', color: '#1976d2', padding: '4px 12px', borderRadius: 16, fontSize: 12, fontWeight: 600 }}>
+                    Inquiry
+                  </span>
+                </div>
+                <p style={{ margin: '8px 0 4px', color: '#555' }}>
+                  <strong>From:</strong> {inquiry.buyerName || 'Interested Buyer'}
+                </p>
+                <p style={{ margin: '4px 0 12px', color: '#777', fontSize: 12 }}>
+                  Received on: {new Date(inquiry.date).toLocaleDateString()}
+                </p>
+                <div style={{ background: '#fff', padding: 12, borderRadius: 8, borderLeft: '4px solid #1976d2', marginBottom: 12 }}>
+                  <p style={{ margin: 0, color: '#333', lineHeight: 1.5, fontSize: 14 }}>
+                    {inquiry.message}
+                  </p>
+                </div>
+                <Link
+                  to={`/property/${inquiry.propertyId}`}
+                  style={{ display: 'inline-block', marginTop: 8, color: '#1976d2', textDecoration: 'none', fontWeight: 600 }}
+                >
+                  View Property Details →
+                </Link>
               </div>
             ))}
           </div>
         ) : (
-          <p>No buyer inquiries yet.</p>
+          <div style={{ textAlign: 'center', padding: 40, background: '#f5f5f5', borderRadius: 16 }}>
+            <h3 style={{ color: '#666' }}>No inquiries yet</h3>
+            <p style={{ color: '#999' }}>
+              You haven't received any inquiries yet. <Link to="/seller/add">Add a property</Link> to start receiving inquiries from buyers.
+            </p>
+          </div>
         )}
       </div>
 

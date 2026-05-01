@@ -3,48 +3,64 @@ import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 import { usePropertyContext } from '../../context/PropertyContext';
 
-const BuyerInquiries = () => {
+const SellerInquiries = () => {
   const { user } = useAuthContext();
   const { allProperties = [] } = usePropertyContext();
 
-  // Get all inquiries for this buyer from all properties
-  const buyerInquiries = allProperties.flatMap(property =>
+  // Get seller's properties
+  const sellerProperties = allProperties.filter(p => p.sellerId === user?.id);
+
+  // Get all inquiries received on seller's properties
+  const sellerInquiries = sellerProperties.flatMap(property =>
     (property.inquiries || [])
-      .filter(inquiry => inquiry.userId === user?.id && inquiry.type === 'inquiry')
+      .filter(i => i.type === 'inquiry')
       .map(inquiry => ({ ...inquiry, property }))
   );
+
+  // TEMP: Show all inquiries for debugging
+  const allInquiries = allProperties.flatMap(property =>
+    (property.inquiries || [])
+      .filter(i => i.type === 'inquiry')
+      .map(inquiry => ({ ...inquiry, property }))
+  );
+
+  console.log('Seller ID:', user?.id);
+  console.log('Seller Properties:', sellerProperties);
+  console.log('Seller Inquiries:', sellerInquiries);
+  console.log('All Inquiries:', allInquiries);
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 0' }}>
       <div style={{ marginBottom: 32 }}>
-        <h1>My Inquiries</h1>
+        <h1>All Inquiries Received</h1>
         <p style={{ color: '#555' }}>
-          View all your inquiries and messages sent to property sellers.
+          View all inquiries from buyers interested in your properties.
         </p>
       </div>
 
       <section>
-        {buyerInquiries.length > 0 ? (
+        {allInquiries.length > 0 ? (
           <div style={{ display: 'grid', gap: 16 }}>
-            {buyerInquiries.map((inquiry) => (
-              <div
-                key={inquiry.id}
-                style={{
-                  padding: 20,
-                  borderRadius: 16,
-                  border: '1px solid #e0e0e0',
-                  background: '#fafafa',
-                }}
-              >
+            {allInquiries.map((inquiry) => {
+              return (
                 <div
+                  key={inquiry.id}
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'start',
-                    marginBottom: 12,
+                    padding: 20,
+                    borderRadius: 16,
+                    border: '1px solid #e0e0e0',
+                    background: '#fafafa',
                   }}
                 >
-                  <h3 style={{ margin: 0 }}>{inquiry.property?.title || 'Property'}</h3>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'start',
+                      marginBottom: 12,
+                    }}
+                  >
+                    <h3 style={{ margin: 0 }}>{inquiry.property?.title || 'Property'}</h3>
                     <span
                       style={{
                         background: '#e3f2fd',
@@ -60,10 +76,10 @@ const BuyerInquiries = () => {
                   </div>
 
                   <p style={{ margin: '8px 0 4px', color: '#555' }}>
-                    <strong>Property Location:</strong> {inquiry.property?.location || 'N/A'}
+                    <strong>From:</strong> {inquiry.buyerName || 'Interested Buyer'}
                   </p>
                   <p style={{ margin: '4px 0 12px', color: '#777', fontSize: 12 }}>
-                    Sent on: {new Date(inquiry.date).toLocaleDateString()}
+                    Received on: {new Date(inquiry.date).toLocaleDateString()}
                   </p>
 
                   <div
@@ -93,7 +109,8 @@ const BuyerInquiries = () => {
                     View Property Details →
                   </Link>
                 </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div
@@ -104,9 +121,9 @@ const BuyerInquiries = () => {
               borderRadius: 16,
             }}
           >
-            <h3 style={{ color: '#666' }}>No inquiries yet</h3>
+            <h3 style={{ color: '#666' }}>No inquiries yet (DEBUG: {allInquiries.length} total)</h3>
             <p style={{ color: '#999' }}>
-              You haven't sent any inquiries yet. <Link to="/properties">Browse properties</Link> to send an inquiry.
+              You haven't received any inquiries yet. <Link to="/seller/add">Add a property</Link> to start receiving inquiries from buyers.
             </p>
           </div>
         )}
@@ -115,4 +132,4 @@ const BuyerInquiries = () => {
   );
 };
 
-export default BuyerInquiries;
+export default SellerInquiries;

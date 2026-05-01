@@ -5,11 +5,17 @@ import { usePropertyContext } from '../../context/PropertyContext';
 
 const BuyerDashboard = () => {
   const { user } = useAuthContext();
-  const { wishlist = [], allProperties = [], appointments = [], inquiries = [] } = usePropertyContext();
+  const { wishlist = [], allProperties = [], appointments = [] } = usePropertyContext();
 
-  const savedProperties = allProperties.filter ? allProperties.filter((property) => wishlist.includes(property.id)) : [];
-  const userAppointments = appointments.filter ? appointments.filter((appointment) => appointment.userId === user?.id) : [];
-  const userInquiries = inquiries.filter ? inquiries.filter((inquiry) => inquiry.userId === user?.id && inquiry.type === 'inquiry') : [];
+  const savedProperties = allProperties.filter((property) => wishlist.includes(property.id));
+  const userAppointments = appointments.filter((appointment) => appointment.userId === user?.id);
+  
+  // Get all inquiries for this user from all properties
+  const userInquiries = allProperties.flatMap(property =>
+    (property.inquiries || [])
+      .filter(inquiry => inquiry.userId === user?.id && inquiry.type === 'inquiry')
+      .map(inquiry => ({ ...inquiry, property }))
+  );
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 0' }}>
@@ -88,23 +94,20 @@ const BuyerDashboard = () => {
         <h2>Recent Inquiries</h2>
         {userInquiries.length > 0 ? (
           <div style={{ display: 'grid', gap: 16 }}>
-            {userInquiries.slice(0, 3).map((inquiry) => {
-              const property = allProperties.find((item) => item.id === inquiry.propertyId);
-              return (
-                <div key={inquiry.id} style={{ padding: 20, borderRadius: 16, border: '1px solid #e0e0e0', background: '#fafafa' }}>
-                  <h3 style={{ margin: 0, marginBottom: 8 }}>{property?.title || 'Property'}</h3>
-                  <p style={{ margin: '4px 0', color: '#777', fontSize: 12 }}>
-                    Sent on: {new Date(inquiry.date).toLocaleDateString()}
-                  </p>
-                  <div style={{ background: '#fff', padding: 12, borderRadius: 8, borderLeft: '4px solid #ff9800', marginTop: 8, marginBottom: 8 }}>
-                    <p style={{ margin: 0, color: '#333', fontSize: 14 }}>{inquiry.message}</p>
-                  </div>
-                  <Link to="/buyer/inquiries" style={{ color: '#1976d2', textDecoration: 'none', fontWeight: 600 }}>
-                    View All Inquiries →
-                  </Link>
+            {userInquiries.slice(0, 3).map((inquiry) => (
+              <div key={inquiry.id} style={{ padding: 20, borderRadius: 16, border: '1px solid #e0e0e0', background: '#fafafa' }}>
+                <h3 style={{ margin: 0, marginBottom: 8 }}>{inquiry.property?.title || 'Property'}</h3>
+                <p style={{ margin: '4px 0', color: '#777', fontSize: 12 }}>
+                  Sent on: {new Date(inquiry.date).toLocaleDateString()}
+                </p>
+                <div style={{ background: '#fff', padding: 12, borderRadius: 8, borderLeft: '4px solid #ff9800', marginTop: 8, marginBottom: 8 }}>
+                  <p style={{ margin: 0, color: '#333', fontSize: 14 }}>{inquiry.message}</p>
                 </div>
-              );
-            })}
+                <Link to="/buyer/inquiries" style={{ color: '#1976d2', textDecoration: 'none', fontWeight: 600 }}>
+                  View All Inquiries →
+                </Link>
+              </div>
+            ))}
           </div>
         ) : (
           <p style={{ color: '#555' }}>

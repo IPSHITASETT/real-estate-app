@@ -60,6 +60,7 @@ const PropertyDetailsPage = () => {
       time: scheduleTime,
       status: 'pending',
       userId: user?.id,
+      buyerName: user?.name,
     });
     
     notify.success(`${scheduleType === 'video' ? 'Video Call' : 'Site Visit'} scheduled for ${scheduleDate} at ${scheduleTime}`);
@@ -83,6 +84,7 @@ const PropertyDetailsPage = () => {
       type: 'inquiry',
       message: inquiryMessage,
       userId: user?.id,
+      buyerName: user?.name,
       date: new Date().toISOString(),
     });
     

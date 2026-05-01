@@ -6,6 +6,7 @@ import PropertyDetailsPage from '../../pages/PropertyDetails/PropertyDetailsPage
 import AdminPanel from '../../pages/Admin/AdminPanel';
 import SellerDashboard from '../../pages/Seller/SellerDashboard';
 import AddProperty from '../../pages/Seller/AddProperty';
+import SellerInquiries from '../../pages/Seller/SellerInquiries';
 import BuyerDashboard from '../../pages/Buyer/BuyerDashboard';
 import BuyerInquiries from '../../pages/Buyer/BuyerInquiries';
 import LoginPage from '../../pages/Auth/LoginPage';
@@ -94,6 +95,17 @@ const AppRoutes = () => {
             <Layout>
               <RequireAuth allowedRoles={['seller']}>
                 <AddProperty />
+              </RequireAuth>
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/seller/inquiries"
+          element={
+            <Layout>
+              <RequireAuth allowedRoles={['seller']}>
+                <SellerInquiries />
               </RequireAuth>
             </Layout>
           }
