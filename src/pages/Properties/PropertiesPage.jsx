@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { usePropertyContext } from '../../context/PropertyContext';
 import './PropertiesPage.css';
 
@@ -214,6 +214,9 @@ const PropertiesPage = () => {
 
       {/* Right Side - Property Cards */}
       <main className="properties-content">
+        <div className="breadcrumb">
+          <Link to="/">Home</Link> / <span>Properties</span>
+        </div>
         <div className="properties-header">
           <h1>All Properties</h1>
           <span className="results-count">{filteredProps.length} properties found</span>

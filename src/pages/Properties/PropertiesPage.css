@@ -123,6 +123,21 @@
   flex: 1;
 }
 
+.breadcrumb {
+  margin-bottom: 12px;
+  color: #666;
+  font-size: 14px;
+}
+
+.breadcrumb a {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
 .properties-header {
   display: flex;
   justify-content: space-between;
@@ -184,8 +199,10 @@
 
 .card-image {
   width: 280px;
+  height: 220px;
   flex-shrink: 0;
   position: relative;
+  overflow: hidden;
 }
 
 .card-image img {
