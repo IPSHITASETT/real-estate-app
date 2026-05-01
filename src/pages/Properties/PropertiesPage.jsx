@@ -224,7 +224,7 @@ const PropertiesPage = () => {
           <Link to="/">Home</Link> / <span>Properties</span>
         </div>
         <div className="properties-header">
-          <h1>All Properties</h1>
+          <h1>{localFilters.type ? `All Properties - ${localFilters.type}` : 'All Properties'}</h1>
           <span className="results-count">{filteredProps.length} properties found</span>
         </div>
 

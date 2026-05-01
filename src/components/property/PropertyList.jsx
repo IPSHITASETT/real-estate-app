@@ -5,14 +5,16 @@ import { useAuthContext } from '../../context/AuthContext';
 import { useNotificationContext } from '../../context/NotificationContext';
 import './PropertyList.css';
 
-const PropertyList = ({ showViewAll = true, limit = 8 }) => {
-  const { filteredProperties, toggleWishlist, isInWishlist, filters } = usePropertyContext();
+const PropertyList = ({ showViewAll = true, limit = 8, useFiltered = true }) => {
+  const { allProperties, filteredProperties, toggleWishlist, isInWishlist, filters } = usePropertyContext();
   const { user } = useAuthContext();
   const { notify } = useNotificationContext();
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const displayProperties = limit ? filteredProperties.slice(0, limit) : filteredProperties;
+  const approvedProperties = allProperties.filter(p => p.isApproved);
+  const propertiesToDisplay = useFiltered ? filteredProperties : approvedProperties;
+  const displayProperties = limit ? propertiesToDisplay.slice(0, limit) : propertiesToDisplay;
   const cardsPerView = 4;
   const maxIndex = Math.max(0, displayProperties.length - cardsPerView);
 
@@ -58,6 +60,7 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
   };
 
   const hasActiveFilters = () => {
+    if (!useFiltered) return false;
     return Boolean(
       filters.city ||
       filters.type ||
@@ -69,7 +72,7 @@ const PropertyList = ({ showViewAll = true, limit = 8 }) => {
     );
   };
 
-  if (!filteredProperties || filteredProperties.length === 0) {
+  if (!propertiesToDisplay || propertiesToDisplay.length === 0) {
     return (
       <div className="property-list">
         <p className="no-properties">No properties found. Try adjusting your filters.</p>

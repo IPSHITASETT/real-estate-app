@@ -5,10 +5,20 @@ import PremiumPropertyCard from '../../components/property/PremiumPropertyCard';
 import PropertyTypesSection from '../../components/property/PropertyTypesSection';
 import WishlistSection from '../../components/property/WishlistSection';
 import MapView from '../../components/property/MapView';
+import { usePropertyContext } from '../../context/PropertyContext';
 import './HomePage.css';
 
 const HomePage = () => {
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
+  const { filters } = usePropertyContext();
+  const showFilteredHome = Boolean(
+    filters.city ||
+    filters.configuration?.length ||
+    filters.possession?.length ||
+    filters.minPrice ||
+    filters.maxPrice ||
+    filters.isPremium
+  );
 
   return (
     <>
@@ -39,7 +49,7 @@ const HomePage = () => {
 
         {/* Conditional Rendering based on view mode */}
         {viewMode === 'list' ? (
-          <PropertyList />
+          <PropertyList useFiltered={showFilteredHome} />
         ) : (
           <MapView />
         )}
