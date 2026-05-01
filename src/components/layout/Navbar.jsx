@@ -52,6 +52,11 @@ const Navbar = () => {
     { label: 'Dashboard', path: '/seller' },
   ];
 
+  const adminMenuItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Admin Panel', path: '/admin' },
+  ];
+
   const authMenuItems = [
     { label: 'Home', path: '/' },
     { label: 'Buy', path: '/' },
@@ -64,16 +69,10 @@ const Navbar = () => {
       ? buyerMenuItems
       : user.role === 'seller'
       ? sellerMenuItems
-      : [...authMenuItems]
+      : user.role === 'admin'
+      ? adminMenuItems
+      : authMenuItems
     : guestMenuItems;
-
-  const dashboardRoute = user && user.role === 'admin'
-    ? { label: 'Admin Panel', path: '/admin' }
-    : null;
-
-  if (dashboardRoute) {
-    menuItems.push(dashboardRoute);
-  }
 
   return (
     <>

@@ -125,15 +125,23 @@
 }
 
 .stat-card.no-bg {
-  background: transparent;
-  backdrop-filter: none;
-  border: none;
-  box-shadow: none;
+  background: rgba(114, 119, 128, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(13, 21, 41, 0.3);
+  border-radius: 16px;
+  padding: 28px 36px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  transform: translateY(0);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .stat-card.no-bg:hover {
-  background: transparent;
-  transform: none;
+  background: rgba(15, 23, 42, 0.3);
+  transform: translateY(-8px);
 }
 
 .stat-count {
