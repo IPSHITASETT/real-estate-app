@@ -5,13 +5,17 @@ import PropertiesPage from '../../pages/Properties/PropertiesPage';
 import PropertyDetailsPage from '../../pages/PropertyDetails/PropertyDetailsPage';
 import AdminPanel from '../../pages/Admin/AdminPanel';
 import SellerDashboard from '../../pages/Seller/SellerDashboard';
+import AddProperty from '../../pages/Seller/AddProperty';
 import BuyerDashboard from '../../pages/Buyer/BuyerDashboard';
+import BuyerInquiries from '../../pages/Buyer/BuyerInquiries';
 import LoginPage from '../../pages/Auth/LoginPage';
 import RequireAuth from '../../components/common/RequireAuth';
+import ScrollToTop from '../../components/common/ScrollToTop';
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
 
         {/* Wrap Layout here */}
@@ -63,11 +67,33 @@ const AppRoutes = () => {
         />
 
         <Route
+          path="/buyer/inquiries"
+          element={
+            <Layout>
+              <RequireAuth allowedRoles={['buyer']}>
+                <BuyerInquiries />
+              </RequireAuth>
+            </Layout>
+          }
+        />
+
+        <Route
           path="/seller"
           element={
             <Layout>
               <RequireAuth allowedRoles={['seller']}>
                 <SellerDashboard />
+              </RequireAuth>
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/seller/add"
+          element={
+            <Layout>
+              <RequireAuth allowedRoles={['seller']}>
+                <AddProperty />
               </RequireAuth>
             </Layout>
           }

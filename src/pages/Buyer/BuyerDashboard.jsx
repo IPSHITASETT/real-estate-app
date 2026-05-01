@@ -5,10 +5,11 @@ import { usePropertyContext } from '../../context/PropertyContext';
 
 const BuyerDashboard = () => {
   const { user } = useAuthContext();
-  const { wishlist = [], allProperties = [], appointments = [] } = usePropertyContext();
+  const { wishlist = [], allProperties = [], appointments = [], inquiries = [] } = usePropertyContext();
 
   const savedProperties = allProperties.filter ? allProperties.filter((property) => wishlist.includes(property.id)) : [];
   const userAppointments = appointments.filter ? appointments.filter((appointment) => appointment.userId === user?.id) : [];
+  const userInquiries = inquiries.filter ? inquiries.filter((inquiry) => inquiry.userId === user?.id && inquiry.type === 'inquiry') : [];
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 0' }}>
@@ -28,6 +29,10 @@ const BuyerDashboard = () => {
           <div style={{ flex: '1 1 240px', padding: 20, borderRadius: 18, background: '#f5ffef' }}>
             <h3>Scheduled Appointments</h3>
             <p style={{ margin: 0, color: '#333' }}>{userAppointments.length} scheduled</p>
+          </div>
+          <div style={{ flex: '1 1 240px', padding: 20, borderRadius: 18, background: '#fff3e0' }}>
+            <h3>Inquiries</h3>
+            <p style={{ margin: 0, color: '#333' }}>{userInquiries.length} sent</p>
           </div>
         </div>
       </section>
@@ -58,9 +63,9 @@ const BuyerDashboard = () => {
 
       <section>
         <h2>Scheduled Appointments</h2>
-        {appointments.length > 0 ? (
+        {userAppointments.length > 0 ? (
           <div style={{ display: 'grid', gap: 16 }}>
-            {appointments.map((appointment) => {
+            {userAppointments.map((appointment) => {
               const property = allProperties.find((item) => item.id === appointment.propertyId);
               return (
                 <div key={appointment.id} style={{ padding: 20, borderRadius: 16, border: '1px solid #e0e0e0' }}>
@@ -76,6 +81,35 @@ const BuyerDashboard = () => {
           </div>
         ) : (
           <p style={{ color: '#555' }}>No appointments scheduled yet. Select a property to book a video call or site visit.</p>
+        )}
+      </section>
+
+      <section style={{ marginTop: 32 }}>
+        <h2>Recent Inquiries</h2>
+        {userInquiries.length > 0 ? (
+          <div style={{ display: 'grid', gap: 16 }}>
+            {userInquiries.slice(0, 3).map((inquiry) => {
+              const property = allProperties.find((item) => item.id === inquiry.propertyId);
+              return (
+                <div key={inquiry.id} style={{ padding: 20, borderRadius: 16, border: '1px solid #e0e0e0', background: '#fafafa' }}>
+                  <h3 style={{ margin: 0, marginBottom: 8 }}>{property?.title || 'Property'}</h3>
+                  <p style={{ margin: '4px 0', color: '#777', fontSize: 12 }}>
+                    Sent on: {new Date(inquiry.date).toLocaleDateString()}
+                  </p>
+                  <div style={{ background: '#fff', padding: 12, borderRadius: 8, borderLeft: '4px solid #ff9800', marginTop: 8, marginBottom: 8 }}>
+                    <p style={{ margin: 0, color: '#333', fontSize: 14 }}>{inquiry.message}</p>
+                  </div>
+                  <Link to="/buyer/inquiries" style={{ color: '#1976d2', textDecoration: 'none', fontWeight: 600 }}>
+                    View All Inquiries →
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p style={{ color: '#555' }}>
+            No inquiries sent yet. <Link to="/properties">Browse properties</Link> to send inquiries.
+          </p>
         )}
       </section>
     </div>

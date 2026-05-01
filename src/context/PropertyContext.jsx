@@ -2,10 +2,12 @@ import React, { createContext, useContext, useState, useCallback, useEffect } fr
 import propertiesRaw from '../data/properties.json';
 import { filterProperties } from '../utils/helpers';
 import { generateId } from '../utils/helpers';
+import { useAuthContext } from './AuthContext';
 
 const PropertyContext = createContext(null);
 
 export const PropertyProvider = ({ children }) => {
+  const { user } = useAuthContext();
   const [properties, setProperties] = useState(() => {
     const stored = localStorage.getItem('re_properties');
     return stored ? JSON.parse(stored) : propertiesRaw || [];
@@ -22,12 +24,19 @@ export const PropertyProvider = ({ children }) => {
   const [viewMode, setViewMode] = useState('list');
   
   // Wishlist state
-  const [wishlist, setWishlist] = useState(() => {
-    const stored = localStorage.getItem('re_wishlist');
-    const parsed = stored ? JSON.parse(stored) : [];
-    // Ensure all IDs are numbers
-    return parsed.map(id => Number(id));
-  });
+  const [wishlist, setWishlist] = useState([]);
+
+  // Load wishlist based on user
+  useEffect(() => {
+    const key = user ? `re_wishlist_${user.id}` : null;
+    if (key) {
+      const stored = localStorage.getItem(key);
+      const parsed = stored ? JSON.parse(stored) : [];
+      setWishlist(parsed.map(id => Number(id)));
+    } else {
+      setWishlist([]);
+    }
+  }, [user]);
 
   // Persist properties to localStorage
   useEffect(() => {
@@ -36,8 +45,10 @@ export const PropertyProvider = ({ children }) => {
 
   // Persist wishlist to localStorage
   useEffect(() => {
-    localStorage.setItem('re_wishlist', JSON.stringify(wishlist));
-  }, [wishlist]);
+    if (user) {
+      localStorage.setItem(`re_wishlist_${user.id}`, JSON.stringify(wishlist));
+    }
+  }, [wishlist, user]);
 
   const addToWishlist = useCallback((propertyId) => {
     const id = Number(propertyId);

@@ -40,8 +40,16 @@ const Navbar = () => {
   const buyerMenuItems = [
     { label: 'Home', path: '/' },
     { label: 'Properties', path: '/properties' },
-    { label: 'Favourites ❤️', path: '/#wishlist' },
+    { label: 'Wishlist ❤️', path: '/#wishlist' },
+    { label: 'Inquiries', path: '/buyer/inquiries' },
     { label: 'Dashboard', path: '/buyer' },
+  ];
+
+  const sellerMenuItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Add Property', path: '/seller/add' },
+    { label: 'Inquiries', path: '/seller/inquiries' },
+    { label: 'Dashboard', path: '/seller' },
   ];
 
   const authMenuItems = [
@@ -54,18 +62,16 @@ const Navbar = () => {
   const menuItems = user
     ? user.role === 'buyer'
       ? buyerMenuItems
+      : user.role === 'seller'
+      ? sellerMenuItems
       : [...authMenuItems]
     : guestMenuItems;
 
-  const dashboardRoute = user && user.role !== 'buyer'
-    ? user.role === 'seller'
-      ? { label: 'Dashboard', path: '/seller' }
-      : user.role === 'admin'
-      ? { label: 'Admin Panel', path: '/admin' }
-      : null
+  const dashboardRoute = user && user.role === 'admin'
+    ? { label: 'Admin Panel', path: '/admin' }
     : null;
 
-  if (dashboardRoute && user && user.role !== 'buyer') {
+  if (dashboardRoute) {
     menuItems.push(dashboardRoute);
   }
 
@@ -92,6 +98,7 @@ const Navbar = () => {
                 color="inherit"
                 component={Link}
                 to={item.path}
+                onClick={item.label === 'Home' ? () => window.scrollTo({ top: 0, behavior: 'smooth' }) : undefined}
               >
                 {item.label}
               </Button>
@@ -130,7 +137,12 @@ const Navbar = () => {
                 key={item.label}
                 component={Link}
                 to={item.path}
-                onClick={toggleDrawer}
+                onClick={() => {
+                  toggleDrawer();
+                  if (item.label === 'Home') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
               >
                 <ListItemText primary={item.label} />
               </ListItem>
