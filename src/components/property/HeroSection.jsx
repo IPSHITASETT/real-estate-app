@@ -121,11 +121,10 @@ const HeroSection = () => {
             </p>
           </div>
 
-          {/* Right Side - Stats */}
           <div className="hero-right">
             <div className="stats-grid">
               {stats.map((stat, index) => (
-                <div key={index} className="stat-card">
+                <div key={index} className="stat-card no-bg">
                   <span className="stat-count">{stat.count}</span>
                   <span className="stat-label">{stat.label}</span>
                 </div>

@@ -22,13 +22,6 @@ const SellerDashboard = () => {
     (property.inquiries || []).filter(i => i.type === 'appointment').map(appointment => ({ ...appointment, property }))
   );
 
-  // Debug: Log inquiries for debugging
-  console.log('Seller ID:', user?.id);
-  console.log('Seller Properties:', sellerProperties);
-  console.log('Seller Inquiries:', sellerInquiries);
-  console.log('All Properties:', allProperties);
-  console.log('All Inquiries:', allProperties.flatMap(p => p.inquiries || []));
-  
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -200,26 +193,6 @@ const SellerDashboard = () => {
       <div className="seller-actions">
         <button className="add-property-btn" onClick={() => setShowAddForm(!showAddForm)}>
           {showAddForm ? '✕ Cancel' : '+ Add New Property'}
-        </button>
-        {/* Temporary test button */}
-        <button 
-          className="add-property-btn" 
-          style={{ background: '#ff9800', marginLeft: '10px' }}
-          onClick={() => {
-            // Add test inquiry to first property
-            if (sellerProperties.length > 0) {
-              addInquiry(sellerProperties[0].id, {
-                type: 'inquiry',
-                message: 'Test inquiry from buyer',
-                userId: 'user_001',
-                buyerName: 'Amit Sharma',
-                date: new Date().toISOString(),
-              });
-              notify.success('Test inquiry added!');
-            }
-          }}
-        >
-          Add Test Inquiry
         </button>
       </div>
 
@@ -492,19 +465,19 @@ const SellerDashboard = () => {
         {sellerProperties.length > 0 ? (
           <div className="properties-grid">
             {sellerProperties.map(property => (
-              <div key={property.id} className="property-card">
+              <div key={property.id} className="seller-property-card">
                 <img src={property.image} alt={property.title} />
-                <div className="property-info">
+                <div className="seller-property-info">
                   <h3>{property.title}</h3>
                   <p className="price">{property.priceLabel}</p>
                   <p className="location">{property.location}</p>
-                  <div className="property-meta">
+                  <div className="seller-property-meta">
                     <span className={`status ${property.isApproved ? 'approved' : 'pending'}`}>
                       {property.isApproved ? '✓ Approved' : '⏳ Pending'}
                     </span>
                     {property.isPremium && <span className="premium-badge">⭐ Premium</span>}
                   </div>
-                  <div className="property-stats">
+                  <div className="seller-property-stats">
                     <span>👁 {property.views || 0} views</span>
                     <span>💬 {property.inquiries?.length || 0} inquiries</span>
                   </div>

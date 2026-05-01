@@ -36,10 +36,19 @@ const BuyerDashboard = () => {
             <h3>Scheduled Appointments</h3>
             <p style={{ margin: 0, color: '#333' }}>{userAppointments.length} scheduled</p>
           </div>
-          <div style={{ flex: '1 1 240px', padding: 20, borderRadius: 18, background: '#fff3e0' }}>
-            <h3>Inquiries</h3>
-            <p style={{ margin: 0, color: '#333' }}>{userInquiries.length} sent</p>
-          </div>
+          <Link
+            to="/buyer/inquiries"
+            style={{
+              flex: '1 1 240px',
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+          >
+            <div style={{ padding: 20, borderRadius: 18, background: '#fff3e0', cursor: 'pointer' }}>
+              <h3>Inquiries</h3>
+              <p style={{ margin: 0, color: '#333' }}>{userInquiries.length} sent</p>
+            </div>
+          </Link>
         </div>
       </section>
 
