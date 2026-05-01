@@ -31,12 +31,20 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const menuItems = [
+  const guestMenuItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Properties', path: '/properties' },
+    { label: 'Featured', path: '/#featured' },
+  ];
+
+  const authMenuItems = [
     { label: 'Home', path: '/' },
     { label: 'Buy', path: '/' },
     { label: 'Sell', path: '/seller' },
     { label: 'Admin', path: '/admin' },
   ];
+
+  const menuItems = user ? [...authMenuItems] : guestMenuItems;
 
   const dashboardRoute = user
     ? user.role === 'seller'
@@ -46,7 +54,7 @@ const Navbar = () => {
       : { label: 'Dashboard', path: '/buyer' }
     : null;
 
-  if (dashboardRoute) {
+  if (dashboardRoute && user) {
     menuItems.push(dashboardRoute);
   }
 

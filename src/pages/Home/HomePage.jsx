@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import HeroSection from '../../components/property/HeroSection';
 import PropertyList from '../../components/property/PropertyList';
 import PremiumPropertyCard from '../../components/property/PremiumPropertyCard';
@@ -10,6 +11,7 @@ import './HomePage.css';
 
 const HomePage = () => {
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
+  const location = useLocation();
   const { filters } = usePropertyContext();
   const showFilteredHome = Boolean(
     filters.city ||
@@ -20,12 +22,21 @@ const HomePage = () => {
     filters.isPremium
   );
 
+  useEffect(() => {
+    if (location.hash === '#featured') {
+      const element = document.getElementById('featured');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [location.hash]);
+
   return (
     <>
       <HeroSection />
       
       {/* Property Listings Section */}
-      <section className="properties-section">
+      <section id="featured" className="properties-section">
         <div className="section-header">
           <h2>Featured Properties</h2>
           <p>Explore our handpicked properties for you</p>
