@@ -37,6 +37,14 @@ const Navbar = () => {
     { label: 'Featured', path: '/#featured' },
   ];
 
+  const buyerMenuItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Properties', path: '/properties' },
+    { label: 'Favourites ❤️', path: '/#wishlist' },
+    { label: 'My Appointments', path: '/buyer' },
+    { label: 'Dashboard', path: '/buyer' },
+  ];
+
   const authMenuItems = [
     { label: 'Home', path: '/' },
     { label: 'Buy', path: '/' },
@@ -44,17 +52,21 @@ const Navbar = () => {
     { label: 'Admin', path: '/admin' },
   ];
 
-  const menuItems = user ? [...authMenuItems] : guestMenuItems;
+  const menuItems = user
+    ? user.role === 'buyer'
+      ? buyerMenuItems
+      : [...authMenuItems]
+    : guestMenuItems;
 
-  const dashboardRoute = user
+  const dashboardRoute = user && user.role !== 'buyer'
     ? user.role === 'seller'
       ? { label: 'Dashboard', path: '/seller' }
       : user.role === 'admin'
       ? { label: 'Admin Panel', path: '/admin' }
-      : { label: 'Dashboard', path: '/buyer' }
+      : null
     : null;
 
-  if (dashboardRoute && user) {
+  if (dashboardRoute && user && user.role !== 'buyer') {
     menuItems.push(dashboardRoute);
   }
 

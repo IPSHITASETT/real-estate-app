@@ -6,7 +6,7 @@ import { generateId } from '../utils/helpers';
 const PropertyContext = createContext(null);
 
 export const PropertyProvider = ({ children }) => {
-  const [properties, setProperties] = useState(propertiesRaw);
+  const [properties, setProperties] = useState(propertiesRaw || []);
   const [filters, setFilters] = useState({
     city: '',
     configuration: [],
@@ -60,7 +60,7 @@ export const PropertyProvider = ({ children }) => {
 
   const filteredProperties = filterProperties(properties, filters);
 
-  const approvedProperties = filteredProperties.filter((p) => p.isApproved);
+  const approvedProperties = (filteredProperties || []).filter((p) => p.isApproved);
 
   const addProperty = useCallback((propData) => {
     const newProp = {
@@ -98,12 +98,12 @@ export const PropertyProvider = ({ children }) => {
   }, []);
 
   // Get all inquiries from all properties
-  const allInquiries = properties.flatMap(p => 
+  const allInquiries = (properties || []).flatMap(p => 
     (p.inquiries || []).map(i => ({ ...i, propertyId: p.id }))
   );
 
   // Get all appointments from all properties
-  const allAppointments = properties.flatMap(p => 
+  const allAppointments = (properties || []).flatMap(p => 
     (p.inquiries || []).filter(i => i.type === 'appointment').map(a => ({ ...a, propertyId: p.id }))
   );
 

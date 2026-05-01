@@ -28,7 +28,7 @@ const WishlistSection = () => {
   }
 
   return (
-    <section className="wishlist-section">
+    <section id="wishlist" className="wishlist-section">
       <div className="section-header">
         <h2>❤️ Your Wishlist</h2>
         <p>Properties you've saved</p>

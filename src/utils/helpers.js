@@ -1,6 +1,7 @@
 import propertiesData from '../data/properties.json';
 
 export const filterProperties = (properties, filters) => {
+  if (!properties || !Array.isArray(properties)) return [];
   return properties.filter((p) => {
     const matchCity =
       !filters.city ||

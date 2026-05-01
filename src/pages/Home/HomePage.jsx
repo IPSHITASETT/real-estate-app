@@ -28,6 +28,11 @@ const HomePage = () => {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+    } else if (location.hash === '#wishlist') {
+      const element = document.getElementById('wishlist');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   }, [location.hash]);
 
