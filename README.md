@@ -1,53 +1,278 @@
-# Getting Started with Create React App
+# Real Estate Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive full-stack real estate application built with React that allows users to browse, search, and manage properties. The platform supports multiple user roles including buyers, sellers, and administrators, providing a complete ecosystem for real estate transactions.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+### Core Functionality
+- **Property Listings**: Browse and search through verified properties across India
+- **Advanced Filtering**: Filter by location, configuration (1BHK-4+BHK), budget, possession status
+- **Property Details**: Detailed property pages with images, videos, amenities, and builder information
+- **Wishlist**: Save favorite properties for later viewing
+- **Map View**: Visualize properties on an interactive map
+- **Inquiry System**: Contact sellers directly through the platform
 
-### `npm start`
+### User Management
+- **Role-based Authentication**: Support for Buyers, Sellers, and Administrators
+- **Secure Login System**: Protected routes based on user roles
+- **User Dashboards**: Personalized dashboards for different user types
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Seller Features
+- **Property Management**: Add, edit, and manage property listings
+- **Inquiry Management**: Respond to buyer inquiries
+- **Dashboard Analytics**: Track property performance and engagement
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Buyer Features
+- **Personalized Search**: Save search preferences and filters
+- **Inquiry Tracking**: Monitor responses from sellers
+- **Appointment Scheduling**: Schedule site visits and video calls
 
-### `npm test`
+### Admin Features
+- **Property Approval**: Review and approve/reject property listings
+- **User Management**: Monitor and manage platform users
+- **Inquiry Oversight**: View and manage all platform inquiries
+- **Appointment Management**: Oversee scheduled appointments
+- **Analytics Dashboard**: Platform-wide statistics and metrics
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Tech Stack
 
-### `npm run build`
+### Frontend
+- **React 19**: Modern React with hooks and functional components
+- **Material-UI (MUI)**: Comprehensive UI component library
+- **React Router DOM**: Client-side routing and navigation
+- **React Toastify**: User notifications and alerts
+- **React DatePicker**: Date selection for appointments
+- **CSS3**: Custom styling with responsive design
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### State Management
+- **React Context API**: Global state management for authentication, properties, and notifications
+- **Local Storage**: Persistent data storage for properties, wishlist, and user sessions
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Development Tools
+- **Create React App**: Build setup and development server
+- **ESLint**: Code linting and quality assurance
+- **Jest & React Testing Library**: Unit and integration testing
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📁 Project Structure
 
-### `npm run eject`
+```
+src/
+├── app/
+│   └── routes/
+│       └── AppRoutes.js          # Application routing configuration
+├── components/
+│   ├── common/                   # Reusable UI components
+│   │   ├── Button.jsx
+│   │   ├── Input.jsx
+│   │   ├── NotificationToast.jsx
+│   │   ├── RequireAuth.jsx       # Route protection component
+│   │   └── ScrollToTop.jsx
+│   ├── layout/                   # Layout components
+│   │   ├── Layout.jsx
+│   │   ├── Navbar.jsx
+│   │   └── Footer.jsx
+│   └── property/                 # Property-specific components
+│       ├── HeroSection.jsx
+│       ├── PropertyList.jsx
+│       ├── PropertyFilters.jsx
+│       ├── PropertyDetailsPage.jsx
+│       └── MapView.jsx
+├── context/                      # React Context providers
+│   ├── AuthContext.jsx           # Authentication state
+│   ├── PropertyContext.jsx       # Property and filter state
+│   └── NotificationContext.jsx   # Notification management
+├── data/
+│   └── properties.json           # Sample property data
+├── hooks/                        # Custom React hooks
+│   ├── useAuth.js
+│   └── useProperty.js
+├── pages/                        # Page components
+│   ├── Admin/
+│   │   └── AdminPanel.jsx
+│   ├── Auth/
+│   │   └── LoginPage.jsx
+│   ├── Buyer/
+│   │   ├── BuyerDashboard.jsx
+│   │   └── BuyerInquiries.jsx
+│   ├── Home/
+│   │   └── HomePage.jsx
+│   ├── Properties/
+│   │   └── PropertiesPage.jsx
+│   ├── PropertyDetails/
+│   │   └── PropertyDetailsPage.jsx
+│   └── Seller/
+│       ├── AddProperty.jsx
+│       ├── SellerDashboard.jsx
+│       └── SellerInquiries.jsx
+├── utils/                        # Utility functions
+│   ├── constants.js
+│   ├── formatters.js
+│   └── helpers.js
+└── index.js                      # Application entry point
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🚀 Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn package manager
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd real-estate-app
+   ```
 
-## Learn More
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. **Start the development server**
+   ```bash
+   npm start
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-### Code Splitting
+### Available Scripts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- `npm start` - Runs the app in development mode
+- `npm test` - Launches the test runner
+- `npm run build` - Builds the app for production
+- `npm run eject` - Ejects from Create React App (irreversible)
+
+## 🔐 User Roles & Access
+
+### Guest Users
+- Browse and search properties
+- View property details
+- Access public pages only
+
+### Buyers
+- All guest features
+- Create wishlist
+- Submit property inquiries
+- Schedule appointments
+- Access buyer dashboard
+
+### Sellers
+- All guest features
+- Add/manage properties
+- Respond to inquiries
+- Access seller dashboard
+
+### Administrators
+- Full platform access
+- Approve/reject properties
+- Manage users and inquiries
+- View analytics and reports
+
+## 🎨 Key Components
+
+### HeroSection
+- Eye-catching landing section with search functionality
+- Statistics display (properties, buyers, sellers, cities)
+- Advanced filter options
+
+### PropertyList & PropertyFilters
+- Grid/list view of properties
+- Real-time filtering by multiple criteria
+- Search functionality with URL persistence
+
+### PropertyDetailsPage
+- Comprehensive property information
+- Image/video galleries
+- Inquiry and appointment scheduling
+- Wishlist integration
+
+### Dashboards
+- **Buyer Dashboard**: Inquiry tracking and preferences
+- **Seller Dashboard**: Property management and analytics
+- **Admin Panel**: Platform management and oversight
+
+## 🔄 Data Flow
+
+1. **Authentication**: Users login with role-based access
+2. **Property Loading**: Properties loaded from local storage/JSON
+3. **Filtering**: Real-time filtering applied to property list
+4. **State Management**: Context API manages global application state
+5. **Persistence**: User data and preferences stored in localStorage
+
+## 🧪 Testing
+
+The application includes comprehensive testing setup:
+
+```bash
+npm test
+```
+
+Tests cover:
+- Component rendering
+- User interactions
+- State management
+- Route protection
+- Form validations
+
+## 📱 Responsive Design
+
+- Mobile-first approach
+- Responsive grid layouts
+- Touch-friendly interfaces
+- Optimized for all screen sizes
+
+## 🔒 Security Features
+
+- Route protection with RequireAuth component
+- Role-based access control
+- Input validation and sanitization
+- Secure local storage management
+
+## 🚀 Deployment
+
+### Build for Production
+```bash
+npm run build
+```
+
+The build artifacts will be stored in the `build/` directory, ready for deployment to any static hosting service.
+
+### Environment Variables
+Create a `.env` file for environment-specific configurations:
+```
+REACT_APP_API_URL=https://api.example.com
+REACT_APP_MAP_API_KEY=your_map_api_key
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Authors
+
+- **Ipshita** - *Full Stack Developer*
+
+## 🙏 Acknowledgments
+
+- Material-UI for the excellent component library
+- Unsplash for property images
+- React community for the amazing ecosystem
+- Create React App for the solid foundation
+
+---
+
+**Note**: This is a demonstration project showcasing modern React development practices, state management, and UI/UX design principles. For production use, consider implementing a backend API and proper database integration.
 
 ### Analyzing the Bundle Size
 
