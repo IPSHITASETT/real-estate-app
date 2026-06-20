@@ -13,3 +13,32 @@ At line:1 char:1
  
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Creating an optimized production build...
+Compiled with warnings.
+
+[eslint] 
+src\pages\Seller\SellerDashboard.jsx
+  Line 9:9:    'navigate' is assigned a value but never used    no-unused-vars
+  Line 10:39:  'addInquiry' is assigned a value but never used  no-unused-vars
+  Line 11:17:  'isSeller' is assigned a value but never used    no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+File sizes after gzip:
+
+  147.11 kB (+37 B)  build\static\js\main.19e53752.js
+  6.94 kB            build\static\css\main.243c1481.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
