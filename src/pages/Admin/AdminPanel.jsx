@@ -14,7 +14,6 @@ const AdminPanel = () => {
   
   // Get pending properties
   const pendingProperties = allProperties.filter(p => !p.isApproved);
-  const approvedProperties = allProperties.filter(p => p.isApproved);
   
   // Get all inquiries
   const allInquiries = inquiries;

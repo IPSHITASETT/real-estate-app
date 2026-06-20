@@ -11,10 +11,10 @@ const Footer = () => {
           <h3>🏠 Real Estate App</h3>
           <p>Your trusted partner in finding the perfect property. We connect buyers with their dream homes.</p>
           <div className="footer-social">
-            <a href="#" className="social-link">📘</a>
-            <a href="#" className="social-link">🐦</a>
-            <a href="#" className="social-link">📸</a>
-            <a href="#" className="social-link">💼</a>
+            <a href="https://facebook.com" className="social-link" target="_blank" rel="noopener noreferrer">📘</a>
+            <a href="https://twitter.com" className="social-link" target="_blank" rel="noopener noreferrer">🐦</a>
+            <a href="https://instagram.com" className="social-link" target="_blank" rel="noopener noreferrer">📸</a>
+            <a href="https://linkedin.com" className="social-link" target="_blank" rel="noopener noreferrer">💼</a>
           </div>
         </div>
 
@@ -57,9 +57,9 @@ const Footer = () => {
       <div className="footer-bottom">
         <p>© 2026 Real Estate App. All rights reserved.</p>
         <div className="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">FAQ</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/faq">FAQ</a>
         </div>
       </div>
     </footer>

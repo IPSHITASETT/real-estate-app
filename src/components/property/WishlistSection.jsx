@@ -19,10 +19,6 @@ const WishlistSection = () => {
     removeFromWishlist(Number(propertyId));
   };
 
-  const handleViewAll = () => {
-    navigate('/properties');
-  };
-
   if (wishlistProperties.length === 0) {
     return null;
   }

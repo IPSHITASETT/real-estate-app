@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { usePropertyContext } from '../../context/PropertyContext';
 import { useAuthContext } from '../../context/AuthContext';
 import { useNotificationContext } from '../../context/NotificationContext';
 import './SellerDashboard.css';
 
 const SellerDashboard = () => {
-  const navigate = useNavigate();
-  const { allProperties, addProperty, addInquiry } = usePropertyContext();
-  const { user, isSeller } = useAuthContext();
+  const { allProperties, addProperty } = usePropertyContext();
+  const { user } = useAuthContext();
   const { notify } = useNotificationContext();
   
   // Get seller's properties
